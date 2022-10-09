@@ -21,4 +21,5 @@ const ButtonWrapper = styled.button`
   background-color: black;
   color: white;
   font-size: 14px;
+  cursor: pointer;
 `;
