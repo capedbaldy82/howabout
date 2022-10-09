@@ -1,0 +1,22 @@
+import { css } from '@emotion/react';
+
+interface SizesType {
+  [ket: string]: string;
+}
+
+export const sizes: SizesType = {
+  tablet: '768',
+  desktop: '1024',
+};
+
+const media = Object.keys(sizes).reduce((acc: any, label: string) => {
+  acc[label] = (...args: any) => css`
+    @media screen and (min-width: ${sizes[label]}px) {
+      ${css(...args)}
+    }
+  `;
+
+  return acc;
+}, {});
+
+export default media;
