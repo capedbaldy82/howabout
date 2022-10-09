@@ -85,6 +85,10 @@ const NavWrapper = styled.nav`
       height: 40px;
       background-color: white;
       border-bottom: 1px solid black;
+
+      & > a {
+        width: 100%;
+      }
     }
   }
 `;
