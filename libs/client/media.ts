@@ -4,14 +4,14 @@ interface SizesType {
   [ket: string]: string;
 }
 
-const sizes: SizesType = {
-  tablet: '768px',
-  desktop: '1024px',
+export const sizes: SizesType = {
+  tablet: '768',
+  desktop: '1024',
 };
 
 const media = Object.keys(sizes).reduce((acc: any, label: string) => {
   acc[label] = (...args: any) => css`
-    @media screen and (min-width: ${sizes[label]}) {
+    @media screen and (min-width: ${sizes[label]}px) {
       ${css(...args)}
     }
   `;
