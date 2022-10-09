@@ -1,22 +1,22 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
 import Link from 'next/link';
-
 import { color } from '../constants';
+import media from '../libs/client/media';
 
-const NavMenu = () => {
-  const [menu, setMenu] = useState(false);
-  const ToggleMenu = () => {
-    setMenu((prev) => !prev);
-  };
+interface NavMenuProps {
+  menuState: boolean;
+  menuToggle: () => void;
+}
+
+const NavMenu = ({ menuState, menuToggle }: NavMenuProps) => {
   return (
     <NavWrapper>
-      <button onClick={ToggleMenu}>
-        {menu ? (
+      <button onClick={menuToggle}>
+        {menuState ? (
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
-            viewBox="0 0 24 24"
+            viewBox="0 0 28 28"
             strokeWidth={1.5}
             stroke="currentColor"
             className="w-6 h-6">
@@ -38,18 +38,18 @@ const NavMenu = () => {
           </svg>
         )}
       </button>
-      {menu ? (
-        <ul>
-          <li onClick={ToggleMenu}>
+      {menuState ? (
+        <ul onClick={menuToggle}>
+          <li>
             <Link href="/intro">소개</Link>
           </li>
-          <li onClick={ToggleMenu}>
+          <li>
             <Link href="/subscribe">구독</Link>
           </li>
-          <li onClick={ToggleMenu}>
+          <li>
             <Link href="/review">후기</Link>
           </li>
-          <li onClick={ToggleMenu}>
+          <li>
             <Link href="/login">로그인</Link>
           </li>
         </ul>
@@ -65,8 +65,8 @@ const NavWrapper = styled.nav`
   justify-content: flex-end;
 
   & > button {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     background-color: transparent;
     border: 1px solid black;
     border-radius: 5px;
@@ -75,7 +75,7 @@ const NavWrapper = styled.nav`
   & > ul {
     width: 100%;
     position: fixed;
-    top: 50px;
+    top: 67px;
     right: 0;
 
     & > li {
@@ -84,10 +84,7 @@ const NavWrapper = styled.nav`
       padding-left: 1rem;
       height: 40px;
       background-color: white;
-    }
-
-    & > li {
-      border-bottom: 1px solid ${color.signature};
+      border-bottom: 1px solid black;
     }
   }
 `;
