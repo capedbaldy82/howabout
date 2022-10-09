@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import styled from '@emotion/styled';
 import media from '../libs/client/media';
-import { color } from '../constants';
+import NavMenu from './navmenu';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -15,12 +15,13 @@ const Layout = ({ children }: LayoutProps) => {
         <h1>
           <Link href="/">HowAbout</Link>
         </h1>
-        <nav>
+        <NavMenu />
+        {/* <nav>
           <Link href="/intro">소개</Link>
           <Link href="/subscribe">구독</Link>
           <Link href="/review">후기</Link>
           <Link href="/login">로그인</Link>
-        </nav>
+        </nav> */}
       </Header>
       <main>{children}</main>
       <footer>footer</footer>
@@ -31,13 +32,15 @@ const Layout = ({ children }: LayoutProps) => {
 export default Layout;
 
 const Header = styled.header`
+  position: relative;
   display: flex;
-  padding: 0.8rem;
+  align-items: center;
+  padding: 1rem;
+  height: 50px;
   background-color: tan;
-  border: 1px solid blue;
 
+  ${media.tablet`height:70px`}
   ${media.tablet`padding:1.2rem`}
-  ${media.desktop`padding:1.6rem`}
 
   & > h1 {
     width: 50%;
