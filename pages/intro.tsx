@@ -1,4 +1,6 @@
-const Intro = () => {
+import { NextPage } from 'next';
+
+const Intro: NextPage = () => {
   return <h1>Intro</h1>;
 };
 
