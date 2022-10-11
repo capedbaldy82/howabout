@@ -82,9 +82,10 @@ const NavWrapper = styled.nav`
       display: flex;
       align-items: center;
       padding-left: 1rem;
-      height: 40px;
-      background-color: white;
+      height: 50px;
+      background-color: #f2f2f2;
       border-bottom: 1px solid black;
+      font-weight: 600;
 
       & > a {
         width: 100%;
