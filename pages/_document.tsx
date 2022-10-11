@@ -8,7 +8,6 @@ const MyDocument = () => {
           href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap"
           rel="stylesheet"
         />
-        <title>HowAbout</title>
       </Head>
       <body style={{ fontFamily: 'Noto Sans KR' }}>
         <Main />

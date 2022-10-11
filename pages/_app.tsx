@@ -1,12 +1,21 @@
 import type { AppProps } from 'next/app';
-import Layout from '../components/layout';
+import Head from 'next/head';
+import Layout from '../components/layouts/layout';
 import '../styles/globals.css';
+import { RecoilRoot } from 'recoil';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
+    <>
+      <Head>
+        <title>HowAbout</title>
+      </Head>
+      <RecoilRoot>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </RecoilRoot>
+    </>
   );
 }
 

@@ -3,15 +3,16 @@ import { UseFormRegisterReturn } from 'react-hook-form';
 import media from '../libs/client/media';
 
 interface InputProps {
+  type?: string;
   place?: string;
   name: string;
   register: UseFormRegisterReturn;
 }
 
-const Input = ({ place, name, register }: InputProps) => {
+const Input = ({ type = 'text', place, name, register }: InputProps) => {
   return (
     <InputWrapper>
-      <input type="text" placeholder={place} id={name} {...register} autoComplete="off" />
+      <input type={type} placeholder={place} id={name} {...register} autoComplete="off" />
     </InputWrapper>
   );
 };
@@ -19,11 +20,13 @@ const Input = ({ place, name, register }: InputProps) => {
 export default Input;
 
 const InputWrapper = styled.div`
+  width: 100%;
+  max-width: 350px;
+  ${media.tablet`max-width:500px`};
   & > input {
     margin-bottom: 12px;
     padding: 12px;
-    width: 350px;
-    ${media.tablet`width:500px`};
+    width: 100%;
     outline: none;
 
     &:focus {

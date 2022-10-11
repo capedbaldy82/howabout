@@ -1,17 +1,19 @@
 import React from 'react';
 import Link from 'next/link';
 import styled from '@emotion/styled';
-import media, { sizes } from '../libs/client/media';
-import NavMenu from './navmenu';
+import media, { sizes } from '../../libs/client/media';
+import NavMenu from '../navmenu';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { MenuState } from '../../store';
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 const Layout = ({ children }: LayoutProps) => {
-  const [menu, setMenu] = useState(false);
+  const [menu, setMenu] = useRecoilState(MenuState);
   const [size, setSize] = useState(0);
 
   const checkSize = () => {
@@ -35,7 +37,7 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <div>
       <Header>
-        <h1 onClick={onToggleMenu}>
+        <h1 onClick={() => setMenu(false)}>
           <Link href="/">HowAbout</Link>
         </h1>
         {size < parseInt(sizes.tablet) ? (
