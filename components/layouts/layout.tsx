@@ -1,8 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
 import styled from '@emotion/styled';
-import media, { sizes } from '../libs/client/media';
-import NavMenu from './navmenu';
+import media, { sizes } from '../../libs/client/media';
+import NavMenu from '../navmenu';
 import { useEffect } from 'react';
 import { useState } from 'react';
 
@@ -35,7 +35,7 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <div>
       <Header>
-        <h1 onClick={onToggleMenu}>
+        <h1 onClick={() => setMenu(false)}>
           <Link href="/">HowAbout</Link>
         </h1>
         {size < parseInt(sizes.tablet) ? (
