@@ -13,4 +13,19 @@ const regxObj = {
   store: /[a-zA-z0-9가-힣]/,
 };
 
-export { color, regxObj };
+const modalStyle = {
+  overlay: {
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  content: {
+    left: '0',
+    margin: 'auto',
+    width: '100%',
+    maxWidth: '500px',
+    height: '500px',
+    padding: '0',
+    overflow: 'hidden',
+  },
+};
+
+export { color, regxObj, modalStyle };

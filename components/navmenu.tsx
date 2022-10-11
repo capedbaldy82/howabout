@@ -74,7 +74,7 @@ const NavWrapper = styled.nav`
 
   & > ul {
     width: 100%;
-    position: fixed;
+    position: absolute;
     top: 67px;
     right: 0;
 
