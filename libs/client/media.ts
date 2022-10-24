@@ -5,6 +5,7 @@ interface SizesType {
 }
 
 export const sizes: SizesType = {
+  mobile: '480',
   tablet: '768',
   desktop: '1024',
 };
@@ -18,5 +19,15 @@ const media = Object.keys(sizes).reduce((acc: any, label: string) => {
 
   return acc;
 }, {});
+
+export const customMedia = (size: number) => {
+  const custom = (...args: any) => css`
+    @media screen and (min-width: ${size}px) {
+      ${css(...args)};
+    }
+  `;
+
+  return custom;
+};
 
 export default media;

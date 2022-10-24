@@ -1,10 +1,13 @@
-import type { NextPage } from 'next';
+import { NextPage } from 'next';
+import Banner from '../components/home/banner';
+import NewRelease from '../components/home/newRelease';
 
 const Home: NextPage = () => {
   return (
-    <div style={{ height: '1000px' }}>
-      <h1>Home</h1>
-    </div>
+    <section>
+      <Banner />
+      <NewRelease />
+    </section>
   );
 };
 
