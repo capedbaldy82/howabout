@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
-import { color } from '../constants';
-import media from '../libs/client/media';
+import { useRecoilValue } from 'recoil';
+import { LoginState } from '../store';
 
 interface NavMenuProps {
   menuState: boolean;
@@ -9,6 +9,7 @@ interface NavMenuProps {
 }
 
 const NavMenu = ({ menuState, menuToggle }: NavMenuProps) => {
+  const loginState = useRecoilValue(LoginState);
   return (
     <NavWrapper>
       <button onClick={menuToggle}>
@@ -44,13 +45,20 @@ const NavMenu = ({ menuState, menuToggle }: NavMenuProps) => {
             <Link href="/intro">소개</Link>
           </li>
           <li>
+            <Link href="/product">상품</Link>
+          </li>
+          <li>
+            <Link href="/style">스타일</Link>
+          </li>
+          <li>
             <Link href="/subscribe">구독</Link>
           </li>
           <li>
-            <Link href="/review">후기</Link>
-          </li>
-          <li>
-            <Link href="/login">로그인</Link>
+            {loginState ? (
+              <Link href="/profile">마이페이지</Link>
+            ) : (
+              <Link href="/login">로그인</Link>
+            )}
           </li>
         </ul>
       ) : null}
@@ -75,8 +83,9 @@ const NavWrapper = styled.nav`
   & > ul {
     width: 100%;
     position: absolute;
-    top: 67px;
+    top: 60px;
     right: 0;
+    border-top: 1px solid black;
 
     & > li {
       display: flex;
