@@ -9,7 +9,7 @@ interface SloganProps {
 const Slogan = ({ slogan, logo }: SloganProps) => {
   return (
     <SloganWrapper>
-      {slogan ? <p>당신의 새로운 도전을 위해</p> : null}
+      {slogan ? <p>당신의 새로운 스타일을 위해</p> : null}
       {logo ? <p>HowAbout</p> : null}
     </SloganWrapper>
   );
