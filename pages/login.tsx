@@ -8,24 +8,43 @@ import Link from 'next/link';
 import ButtonBig from '../components/buttonBig';
 import Line from '../components/line';
 import media from '../libs/client/media';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import FormLayout from '../components/layouts/formlayout';
 import { useSetRecoilState } from 'recoil';
-import { MenuState } from '../store';
+import { LoginState, MenuState, ProfileState } from '../store';
+import useMutation from '../libs/server/useMutation';
+import { useRouter } from 'next/router';
 
 interface LoginForm {
   username: string;
   password: string;
 }
 
+interface LoginMutation {
+  ok: boolean;
+  accessToken: string;
+  name: string;
+}
+
 const Login: NextPage = () => {
+  const router = useRouter();
+
   const setMenuState = useSetRecoilState(MenuState);
+  const setProfileState = useSetRecoilState(ProfileState);
+  const setLoginState = useSetRecoilState(LoginState);
+
   const [errorMessage, setErrorMessage] = useState('');
-  const { register, handleSubmit } = useForm<LoginForm>();
+
+  const { register, handleSubmit, watch } = useForm<LoginForm>();
+  const [login, { data, loading, error }] = useMutation<LoginMutation>(
+    'POST',
+    'https://howabout.site/auth/signin'
+  );
 
   const onValid = (validForm: LoginForm) => {
     setErrorMessage('');
     console.log(validForm);
+    login(validForm);
   };
 
   const onUnValid = (error: any) => {
@@ -36,6 +55,15 @@ const Login: NextPage = () => {
       setErrorMessage('비밀번호를 입력해주세요.');
     }
   };
+
+  useEffect(() => {
+    if (data?.ok) {
+      setLoginState(true);
+      setProfileState((prev) => ({ ...prev, name: data.name }));
+      sessionStorage.setItem('token', data.accessToken);
+      router.replace('/');
+    }
+  }, [data]);
 
   return (
     <FormLayout>
@@ -68,7 +96,7 @@ const Login: NextPage = () => {
 export default Login;
 
 const JoinLink = styled.p`
-  margin-bottom: 12px;
+  margin-bottom: 120px;
   padding: 12px;
   width: 100%;
   max-width: 350px;
@@ -84,6 +112,6 @@ const JoinLink = styled.p`
 const ErrorMessage = styled.p`
   margin-bottom: 12px;
   padding-left: 2px;
-  color: orange;
+  color: red;
   font-size: 14px;
 `;
