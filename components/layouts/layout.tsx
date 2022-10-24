@@ -1,12 +1,13 @@
 import React from 'react';
 import Link from 'next/link';
 import styled from '@emotion/styled';
-import media, { sizes } from '../../libs/client/media';
+import media, { customMedia, sizes } from '../../libs/client/media';
 import NavMenu from '../navmenu';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { useRecoilState } from 'recoil';
-import { MenuState } from '../../store';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { LoginState, MenuState } from '../../store';
+import NavList from '../navlist';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -15,6 +16,11 @@ interface LayoutProps {
 const Layout = ({ children }: LayoutProps) => {
   const [menu, setMenu] = useRecoilState(MenuState);
   const [size, setSize] = useState(0);
+  const loginState = useRecoilValue(LoginState);
+
+  useEffect(() => {
+    setSize(window.outerWidth);
+  }, []);
 
   const checkSize = () => {
     setSize(window.outerWidth);
@@ -36,40 +42,48 @@ const Layout = ({ children }: LayoutProps) => {
 
   return (
     <div>
-      <Header>
-        <h1 onClick={() => setMenu(false)}>
-          <Link href="/">HowAbout</Link>
-        </h1>
-        {size < parseInt(sizes.tablet) ? (
-          <NavMenu menuState={menu} menuToggle={onToggleMenu} />
-        ) : (
-          <NavList>
-            <Link href="/intro">소개</Link>
-            <Link href="/subscribe">구독</Link>
-            <Link href="/review">후기</Link>
-            <Link href="/login">로그인</Link>
-          </NavList>
-        )}
-      </Header>
+      <HeaderWrapper>
+        <Header>
+          <h1 onClick={() => setMenu(false)}>
+            <Link href="/">HowAbout</Link>
+          </h1>
+          {size < parseInt(sizes.tablet) ? (
+            <NavMenu menuState={menu} menuToggle={onToggleMenu} />
+          ) : (
+            <NavList />
+          )}
+        </Header>
+      </HeaderWrapper>
       <main>{children}</main>
-      <footer>footer</footer>
+      <Footer>
+        <ul>
+          <li>CapedBaldy Inc. | HowAbout</li>
+          <li>인천광역시 부평구 창휘로 17 | capedbaldman82@gmail.com</li>
+          <li>Copryright © 2022 CapedBaldy Inc.</li>
+        </ul>
+      </Footer>
     </div>
   );
 };
 
 export default Layout;
 
+const HeaderWrapper = styled.div`
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+`;
+
 const Header = styled.header`
   position: relative;
   display: flex;
   align-items: center;
-  padding: 1.2rem;
   height: 10%;
-  border-bottom: 1px solid black;
   background-color: white;
+  max-width: 1620px;
+  margin: 0 auto;
 
+  padding: 1rem;
+  ${media.tablet`padding:2rem`}
   ${media.tablet`height:70px`}
-  ${media.tablet`padding:1.2rem`}
 
   & > h1 {
     font-size: 28px;
@@ -81,7 +95,17 @@ const Header = styled.header`
   }
 `;
 
-const NavList = styled.nav`
-  display: flex;
-  justify-content: space-around;
+const Footer = styled.footer`
+  padding: 32px;
+  height: 200px;
+  color: white;
+  background-color: black;
+
+  & > ul {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
+      'Open Sans', 'Helvetica Neue', sans-serif;
+    & > li {
+      margin-bottom: 16px;
+    }
+  }
 `;
