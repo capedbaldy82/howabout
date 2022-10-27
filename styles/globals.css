@@ -154,10 +154,22 @@ a:visited {
 }
 
 .screen_out {
-  position: absolute;
-  width: 0;
-  height: 0;
-  line-height: 0;
-  text-indent: -9999em;
   overflow: hidden;
+  position: absolute;
+  clip: rect(0, 0, 0, 0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+}
+
+@font-face {
+  font-family: 'KyoboHandwriting2020A';
+  src: url('../src/fonts/KyoboHandwriting2020pdy.ttf');
+}
+
+@font-face {
+  font-family: 'EF_Diary';
+  src: url('../src/fonts/EF_Diary.ttf');
 }
