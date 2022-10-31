@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { NextPage } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { representative } from '../constants';
 import media from '../libs/client/media';
@@ -9,16 +10,22 @@ const Intro: NextPage = () => {
     <section>
       <h2 className="screen_out">소개</h2>
       <Logo>
-        <img
+        <Image
           src="https://imagedelivery.net/nJK6oMiGlswmnGc8M5OUDA/15031af6-ab2a-4ea3-30ae-f6dcf3b13800/intro"
           alt="로고이미지"
+          width={550}
+          height={350}
+          layout="intrinsic"
         />
       </Logo>
       <Why>
         <div>
-          <img
+          <Image
             src="https://imagedelivery.net/nJK6oMiGlswmnGc8M5OUDA/b1bca090-14ab-43be-f643-457e4a17e400/intro"
             alt="보급상자"
+            width={550}
+            height={350}
+            layout="intrinsic"
           />
           <p>
             학창 시절 항상 옷을 물려받아 입었던 저는 성인이 되고나서야 주체적으로 옷을 사입기
@@ -32,9 +39,12 @@ const Intro: NextPage = () => {
         </div>
         <br />
         <div>
-          <img
+          <Image
             src={`https://imagedelivery.net/nJK6oMiGlswmnGc8M5OUDA/74d66e75-3224-4f47-86a5-1540bfac3200/product`}
             alt="버려진 옷들"
+            width={550}
+            height={350}
+            layout="intrinsic"
           />
           <p>
             항상 물려받은 옷만 입었던 저는 자유와 해방감에 이옷 저옷 약간만 마음에 들어도 사입기
@@ -48,9 +58,12 @@ const Intro: NextPage = () => {
         </div>
         <br />
         <div>
-          <img
+          <Image
             src="https://imagedelivery.net/nJK6oMiGlswmnGc8M5OUDA/0ffe44d0-5ff0-49dc-4072-930f50ad7200/intro"
             alt="스타일"
+            width={550}
+            height={350}
+            layout="intrinsic"
           />
           <p>
             저는 고민하기 시작했습니다. '왜 나는 버릴 옷을 사고있는 걸까'
@@ -70,7 +83,7 @@ const Intro: NextPage = () => {
         </div>
         <br />
         <div>
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <div>
             <img
               src="https://imagedelivery.net/nJK6oMiGlswmnGc8M5OUDA/9ae5e9fd-c62d-428a-5954-00d15f5a6700/intro"
               alt="밀리터리"
@@ -101,10 +114,6 @@ const Intro: NextPage = () => {
               src="https://imagedelivery.net/nJK6oMiGlswmnGc8M5OUDA/0c23f0c3-0a46-4463-629a-ab8706063200/intro"
               alt="아메카지"
             />
-            {/* <img
-              src="https://imagedelivery.net/nJK6oMiGlswmnGc8M5OUDA/96a13737-be93-4d36-6064-734c188b7100/intro"
-              alt="밀리터리"
-            /> */}
           </div>
           <p>
             그래도 나름 가장 오래 버리지않은 옷들이였지만, 결국 버릴 옷이였던 겁니다. 다양한
@@ -118,16 +127,22 @@ const Intro: NextPage = () => {
         <br />
         <div>
           <p>저의 옷에 대한 연대기는 이렇게 나열할 수 있을 것 같습니다</p>
-          <img
+          <Image
             src="https://imagedelivery.net/nJK6oMiGlswmnGc8M5OUDA/b4c10351-24b5-4f59-9cd3-214a84dc8a00/intro"
             alt="연대기"
+            width={550}
+            height={550}
+            layout="intrinsic"
           />
         </div>
         <br />
         <div>
-          <img
+          <Image
             src="https://imagedelivery.net/nJK6oMiGlswmnGc8M5OUDA/a5fc0e5d-972d-48b3-e49a-de6c0707c200/intro"
             alt="기차"
+            width={550}
+            height={350}
+            layout="intrinsic"
           />
           <p>
             물론 미래에는 안정기라고 생각했던 지금이 과도기의 연속일지도 모릅니다
@@ -163,11 +178,6 @@ const Logo = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 80px;
-
-  & > img {
-    width: 100%;
-    max-width: 736px;
-  }
 `;
 
 const Why = styled.article`
@@ -182,13 +192,13 @@ const Why = styled.article`
     ${media.tablet`margin-bottom:120px`};
   }
 
-  & > div > img {
+  /* & > div > img {
     margin-bottom: 8px;
     object-fit: cover;
 
-    width: 90%;
-    ${media.tablet`width:40%`};
-  }
+    width: 40%;
+    ${media.tablet`width:20%`};
+  } */
 
   & p {
     font-family: 'EF_Diary';
@@ -208,7 +218,7 @@ const Why = styled.article`
     & > img {
       margin-bottom: 8px;
       width: 50%;
-      ${media.tablet`width:20%`};
+      max-width: 275px;
     }
   }
 `;
