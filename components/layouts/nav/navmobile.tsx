@@ -1,17 +1,14 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
-import { useRecoilValue } from 'recoil';
-import { LoginState } from '../store';
 
-interface NavMenuProps {
+interface NavMobileProps {
   menuState: boolean;
   menuToggle: () => void;
 }
 
-const NavMenu = ({ menuState, menuToggle }: NavMenuProps) => {
-  const loginState = useRecoilValue(LoginState);
+const NavMobile = ({ menuState, menuToggle }: NavMobileProps) => {
   return (
-    <NavWrapper>
+    <NavMobileWrapper>
       <button onClick={menuToggle}>
         {menuState ? (
           <svg
@@ -48,27 +45,18 @@ const NavMenu = ({ menuState, menuToggle }: NavMenuProps) => {
             <Link href="/product">상품</Link>
           </li>
           <li>
-            <Link href="/style">스타일</Link>
-          </li>
-          <li>
             <Link href="/subscribe">구독</Link>
           </li>
-          <li>
-            {loginState ? (
-              <Link href="/profile">마이페이지</Link>
-            ) : (
-              <Link href="/login">로그인</Link>
-            )}
-          </li>
+          <li>{1 ? <Link href="/profile">마이페이지</Link> : <Link href="/login">로그인</Link>}</li>
         </ul>
       ) : null}
-    </NavWrapper>
+    </NavMobileWrapper>
   );
 };
 
-export default NavMenu;
+export default NavMobile;
 
-const NavWrapper = styled.nav`
+const NavMobileWrapper = styled.nav`
   display: flex;
   justify-content: flex-end;
 
