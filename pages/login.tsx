@@ -30,7 +30,6 @@ const Login: NextPage = () => {
   const router = useRouter();
 
   const setMenuState = useSetRecoilState(MenuState);
-  const setProfileState = useSetRecoilState(ProfileState);
   const setLoginState = useSetRecoilState(LoginState);
 
   const [errorMessage, setErrorMessage] = useState('');
@@ -41,12 +40,14 @@ const Login: NextPage = () => {
     'https://howabout.site/auth/signin'
   );
 
+  // 로그인 폼 유효성 검사 통과 시
   const onValid = (validForm: LoginForm) => {
     setErrorMessage('');
     console.log(validForm);
     login(validForm);
   };
 
+  // 로그인 폼 유효성 검사 실패 시
   const onUnValid = (error: any) => {
     console.log(error);
     if (error?.username?.type === 'required') {
@@ -56,11 +57,11 @@ const Login: NextPage = () => {
     }
   };
 
+  // 로그인 폼 인증 성공 시
   useEffect(() => {
     if (data?.ok) {
       setLoginState(true);
-      setProfileState((prev) => ({ ...prev, name: data.name }));
-      sessionStorage.setItem('token', data.accessToken);
+      localStorage.setItem('token', data.accessToken);
       router.replace('/');
     }
   }, [data]);
