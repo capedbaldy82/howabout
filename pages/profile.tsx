@@ -1,31 +1,70 @@
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
-import { LoginState, ProfileState } from '../store';
+import { useState, useEffect } from 'react';
+import { useSWRConfig } from 'swr';
+import ProfileInfo from '../components/profile/profileinfo';
+import { BASE_URL } from '../constants/server';
+import checkUser from '../libs/server/checkUser';
+import { removeCookie } from '../libs/client/handleCookie';
+import fetchForAuth from '../libs/server/fetchForAuth';
 
 const Profile: NextPage = () => {
   const router = useRouter();
-  const [loginState, setLoginState] = useRecoilState(LoginState);
-  const profileState = useRecoilValue(ProfileState);
-
-  const logOut = () => {
-    setLoginState(false);
-    sessionStorage.removeItem('token');
-    router.replace('/login');
-  };
+  const [isUser, setIsUser] = useState<boolean>(true);
+  const { mutate } = useSWRConfig();
 
   useEffect(() => {
-    if (!loginState) {
-      router.push('/login');
-    }
+    const ok = async () => {
+      const result = await checkUser();
+
+      if (!result?.ok) {
+        setIsUser(false);
+      } else {
+        setIsUser(true);
+      }
+    };
+
+    ok();
   }, []);
+
+  // 로그인 상태 확인 후 리다이렉트 여
+  useEffect(() => {
+    if (!isUser) {
+      router.replace('/login');
+    }
+  }, [isUser]);
+
+  // 로그아웃
+  const logOut = () => {
+    removeCookie('accessToken');
+    mutate(`${BASE_URL}/auth/check`, fetchForAuth, false);
+    router.replace('/login');
+  };
 
   return (
     <section>
       <h2 className="screen_out">Profile</h2>
-      <p style={{ fontSize: '3rem' }}>{profileState?.name}</p>
-      <button onClick={logOut}>로그아웃</button>
+      <section>
+        <div>사진</div>
+        <div>
+          <div>
+            <p>이름</p>
+            <p>랭크</p>
+          </div>
+          <div>
+            <button onClick={logOut}>logOut</button>
+          </div>
+        </div>
+      </section>
+      <section>
+        <nav>
+          <li>대여 상태</li>
+          <li>구독 이력</li>
+          <li>정보 수정</li>
+        </nav>
+        <div>컨텐츠</div>
+      </section>
+      <ProfileInfo />
     </section>
   );
 };

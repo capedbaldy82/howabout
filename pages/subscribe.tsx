@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
-import { NextPage } from 'next';
+import { GetStaticProps, NextPage } from 'next';
 import Image from 'next/image';
 import { useState } from 'react';
-import { representative } from '../constants';
+import { representative } from '../constants/style';
 import media from '../libs/client/media';
 
 const Subscribe: NextPage = () => {
@@ -102,8 +102,9 @@ const Subscribe: NextPage = () => {
           <li>1. 반납 기간을 반드시 지켜주셔야합니다.</li>
           <li>2. 반납 기간 미준수 시 미 반납 상품은 자동 대여 상태가 됩니다.</li>
           <li>
-            3. 대여 중 발생하는 복구 가능한 데미지는 자체적으로 복구합니다.(미세한 스크래치, 실밥
-            풀림 등)
+            3. 대여 중 발생하는 복구 가능한 데미지는 자체적으로 복구합니다.
+            <br />
+            (미세한 스크래치, 실밥 풀림 등)
           </li>
           <li>
             4. 대여 중 발생하는 복구 불가능한 데미지는 제품을 구매하셔야합니다.(음식물 오염, 큰

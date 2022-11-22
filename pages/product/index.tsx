@@ -1,10 +1,9 @@
-import styled from '@emotion/styled';
 import type { NextPage } from 'next';
-import { useState } from 'react';
-import { useEffect } from 'react';
+
+import styled from '@emotion/styled';
 import useSWR from 'swr';
+
 import ProductItem from '../../components/productItem';
-import { customMedia } from '../../libs/client/media';
 
 interface Product {
   id: number;
