@@ -1,7 +1,14 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
+import { Suspense } from 'react';
+import useSWR from 'swr';
+import { BASE_URL } from '../../../constants/server';
+import fetchForAuth from '../../../libs/server/fetchForAuth';
+import { NavBarData } from './navbar';
 
-const NavDesktop = () => {
+const NavDesktop = ({ status, error }: any) => {
+  // const { data, error } = useSWR(`${BASE_URL}/auth/check`, fetchForAuth);
+
   return (
     <NavDesktopWrapper>
       <li>
@@ -13,7 +20,15 @@ const NavDesktop = () => {
       <li>
         <Link href="/subscribe">구독</Link>
       </li>
-      <li>{1 ? <Link href="/profile">마이페이지</Link> : <Link href="/login">로그인</Link>}</li>
+      <Suspense>
+        <li>
+          {!status && !error ? null : status?.ok ? (
+            <Link href="/profile">마이페이지</Link>
+          ) : (
+            <Link href="/login">로그인</Link>
+          )}
+        </li>
+      </Suspense>
     </NavDesktopWrapper>
   );
 };
