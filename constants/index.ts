@@ -1,32 +1,6 @@
-const representative = {
-  color: '#9d7446',
-  maxWidth: '1420px',
-};
+import * as regexp from './regexp';
+import * as style from './style';
+import * as server from './server';
+import * as admin from './admin';
 
-const regExp = {
-  id: /^[A-za-z0-9]{4,20}$/,
-  pw: /^(?=.*[a-zA-z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,20}$/,
-  pwCheck: /^(?=.*[a-zA-z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,20}$/,
-  name: /[a-zA-z0-9가-힣]{2,10}$/,
-  phone: /([0-9]{11})/,
-  email: /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
-  company: /^[0-9]{10}$/,
-  store: /[a-zA-z0-9가-힣]/,
-};
-
-const modalStyle = {
-  overlay: {
-    backgroundColor: 'rgba(0,0,0,0.5)',
-  },
-  content: {
-    left: '0',
-    margin: 'auto',
-    width: '100%',
-    maxWidth: '500px',
-    height: '500px',
-    padding: '0',
-    overflow: 'hidden',
-  },
-};
-
-export { representative, regExp, modalStyle };
+export { regexp, style, server, admin };
