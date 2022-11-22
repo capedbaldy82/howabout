@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import Link from 'next/link';
 import media from '../libs/client/media';
 
 interface ItemProps {
@@ -10,21 +11,23 @@ interface ItemProps {
   rank: number;
 }
 
-const ProductItem = ({ image, brand, rank, status, name }: ItemProps) => {
+const ProductItem = ({ id, image, brand, rank, status, name }: ItemProps) => {
   return (
-    <ItemWrapper>
-      <div>
-        <img src={image} alt="상품 사진" />
-      </div>
-      <TextContents>
-        <p>{brand}</p>
-        <p>{name}</p>
+    <Link href={`/product/${id}`}>
+      <ItemWrapper>
         <div>
-          <p>{rank}</p>
-          <p> [{status ? '가능' : '불가'}]</p>
+          <img src={image} alt="상품 사진" />
         </div>
-      </TextContents>
-    </ItemWrapper>
+        <TextContents>
+          <p>{brand}</p>
+          <p>{name}</p>
+          <div>
+            <p>{rank}</p>
+            <p> [{status ? '가능' : '불가'}]</p>
+          </div>
+        </TextContents>
+      </ItemWrapper>
+    </Link>
   );
 };
 
