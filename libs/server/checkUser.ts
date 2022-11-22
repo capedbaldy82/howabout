@@ -1,31 +1,31 @@
-import { useEffect, useState } from 'react';
-import { BASE_URL } from '../../constants';
+import { BASE_URL } from '../../constants/server';
+import cookies from 'react-cookies';
 
-const checkUser = async () => {
-  if (!localStorage.getItem('token')) {
-    return false;
+interface CheckUserResult {
+  ok: boolean;
+}
+
+const checkUser = async (): Promise<CheckUserResult> => {
+  const token = cookies.load('accessToken');
+
+  if (!token) {
+    return { ok: false };
   }
 
-  const url = `${BASE_URL}/auth/check`;
-  const token = localStorage.getItem('token');
+  const response = await fetch(`${BASE_URL}/auth/check`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
-  try {
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    if (response.ok) {
-      const result = await response.json();
-      return true;
-    } else {
-      return false;
-    }
-  } catch (err) {
-    console.log('it is expired');
-    console.log(`${err} expired token`);
+  const result = await response.json();
+
+  if (result.statusCode === 401) {
+    return { ok: false };
+  } else {
+    return { ok: true };
   }
 };
 
