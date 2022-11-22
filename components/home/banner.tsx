@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
-import { representative } from '../../constants';
+import { representative } from '../../constants/style';
 import media from '../../libs/client/media';
 
 const Banner = () => {
@@ -26,6 +26,7 @@ const BannerWrapper = styled.article`
   background-color: black;
 
   & > div:first-of-type {
+    /* 슬로건 */
     margin: 0 auto;
     color: white;
     max-width: ${representative.maxWidth};
