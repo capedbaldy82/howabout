@@ -2,53 +2,60 @@ import { NextPage } from 'next';
 import { useForm } from 'react-hook-form';
 import styled from '@emotion/styled';
 
-import Input from '../components/input';
-import Slogan from '../components/slogan';
+import Input from '../components/common/input';
+import Slogan from '../components/common/slogan';
 import Link from 'next/link';
-import ButtonBig from '../components/buttonBig';
-import Line from '../components/line';
+import ButtonBig from '../components/common/buttonBig';
+import Line from '../components/common/line';
 import media from '../libs/client/media';
 import { useState, useEffect } from 'react';
 import FormLayout from '../components/layouts/formlayout';
 import { useSetRecoilState } from 'recoil';
-import { LoginState, MenuState, ProfileState } from '../store';
+import { LoginState, MenuState } from '../store';
 import useMutation from '../libs/server/useMutation';
 import { useRouter } from 'next/router';
+import { setCookie } from '../libs/client/handleCookie';
+import { useSWRConfig } from 'swr';
+import { BASE_URL } from '../constants/server';
+import fetchForAuth from '../libs/server/fetchForAuth';
 
 interface LoginForm {
   username: string;
   password: string;
 }
 
-interface LoginMutation {
+interface LoginSuccessResult {
   ok: boolean;
-  accessToken: string;
   name: string;
+  accessToken: string;
+}
+
+interface LoginFailResult {
+  error: string;
+  message: string;
+  statusCode: number;
 }
 
 const Login: NextPage = () => {
+  const setMenuState = useSetRecoilState(MenuState);
+  const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
 
-  const setMenuState = useSetRecoilState(MenuState);
-  const setProfileState = useSetRecoilState(ProfileState);
-  const setLoginState = useSetRecoilState(LoginState);
+  const { mutate } = useSWRConfig();
+  const [login, { data, loading }] = useMutation('POST', 'https://howabout.site/auth/signin');
 
-  const [errorMessage, setErrorMessage] = useState('');
+  const { register, handleSubmit } = useForm<LoginForm>();
 
-  const { register, handleSubmit, watch } = useForm<LoginForm>();
-  const [login, { data, loading, error }] = useMutation<LoginMutation>(
-    'POST',
-    'https://howabout.site/auth/signin'
-  );
-
+  // 로그인 폼 유효성 검사 통과 시
   const onValid = (validForm: LoginForm) => {
+    if (loading) return;
+
     setErrorMessage('');
-    console.log(validForm);
     login(validForm);
   };
 
+  // 로그인 폼 유효성 검사 실패 시
   const onUnValid = (error: any) => {
-    console.log(error);
     if (error?.username?.type === 'required') {
       setErrorMessage('아이디를 입력해주세요.');
     } else if (error?.password?.type === 'required') {
@@ -56,12 +63,18 @@ const Login: NextPage = () => {
     }
   };
 
+  // 로그인 폼 인증 성공 시
   useEffect(() => {
+    console.log('data');
+    console.log(data);
     if (data?.ok) {
-      setLoginState(true);
-      setProfileState((prev) => ({ ...prev, name: data.name }));
-      sessionStorage.setItem('token', data.accessToken);
+      mutate(`${BASE_URL}/auth/check`, fetchForAuth, true);
+      setCookie('accessToken', data.accessToken);
       router.replace('/');
+    } else {
+      if (data?.error === 'Unauthorized') {
+        setErrorMessage('아이디 혹은 비밀번호를 확인해주세요.');
+      }
     }
   }, [data]);
 

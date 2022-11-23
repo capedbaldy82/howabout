@@ -2,15 +2,19 @@ import styled from '@emotion/styled';
 import { NextPage } from 'next';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import Input from '../components/input';
+import Input from '../components/common/input';
 import FormLayout from '../components/layouts/formlayout';
-import Slogan from '../components/slogan';
+import Slogan from '../components/common/slogan';
 import media from '../libs/client/media';
 import DaumPostcode from 'react-daum-postcode';
 import Modal from 'react-modal';
-import { modalStyle, regExp } from '../constants';
-import ButtonBig from '../components/buttonBig';
+import { BASE_URL } from '../constants/server';
+import { modalStyle } from '../constants/style';
+import { regExp } from '../constants/regexp';
+import ButtonBig from '../components/common/buttonBig';
 import { useEffect } from 'react';
+import useSWR from 'swr';
+import useMutation from '../libs/server/useMutation';
 
 interface JoinForm {
   username: string;
@@ -36,29 +40,35 @@ const JoinInputList: { [key: string]: string } = {
   addressDetail: '상세 주소',
 };
 
-const Join: NextPage = ({ result }: any) => {
+const Join: NextPage = () => {
   const { register, handleSubmit, watch, setValue } = useForm<JoinForm>();
+  const [idCheck, { data, loading }] = useMutation('POST', `${BASE_URL}/auth/checkid`);
 
+  // 개인 정보 동의
   const [isAgrre, setIsAgree] = useState(false);
+  // 휴대폰 인증 완료 상태
   const [isVerified, setIsVerified] = useState(false);
-
+  // 인증 번호 요청
   const [isGetNumber, setIsGetNumber] = useState(false);
+  // 실제 인증 번호
   const [realNumber, setRealNumber] = useState('');
-
+  // 아이디 중복
   const [idExist, setIdExist] = useState(false);
+  // 아이디 유효성 및 중복 메세지
   const [idMessage, setIdMessage] = useState('');
+  // 아이디 외 유효성 관련 메세지
   const [errorMessage, setErrorMessage] = useState('');
 
+  // 아이디 중복 체크 시 아규먼트
   const username = watch('username');
+  // 인증 번호 전송 시 아규먼트
   const phone = watch('phone');
+  // 비밀번호 확인 일치 여부 비교 값
   const password = watch('password');
+  // 사용자가 입력한 인증 번호 값
   const userNumber = watch('usernumber');
 
-  useEffect(() => {
-    console.log(result);
-  }, []);
-
-  // useForm onSubmit
+  // useForm 기본 유효성 검사 통과 시
   const onValid = (validForm: JoinForm) => {
     if (!idExist) {
       setErrorMessage('아이디 중복 확인을 해주세요');
@@ -78,6 +88,7 @@ const Join: NextPage = ({ result }: any) => {
     console.log(validForm);
   };
 
+  // useForm 기본 유효성 검사 실패 시
   const onUnValid = (error: any) => {
     console.log(error);
 
@@ -94,32 +105,44 @@ const Join: NextPage = ({ result }: any) => {
     }
   };
 
-  // 아이디 중복 확인
-  const checkUsername = (username: string) => {
+  // 아이디 중복 확인 Fetch
+  const checkUsername = () => {
+    if (loading) {
+      return;
+    }
+    idCheck({ username });
+  };
+
+  // 아이디 중복 확인 Fetch 이후 상태 값 적용
+  useEffect(() => {
     if (username && regExp.id.test(username)) {
-      if (1) {
+      if (data?.ok) {
         setIdMessage('사용 가능한 아이디입니다');
         setIdExist(true);
       } else {
         setIdMessage('이미 존재하는 아이디입니다');
       }
     } else {
-      setIdMessage('아이디는 4~20자의 영문, 숫자, 특수문자로 구성되어야합니다');
-      setIdExist(false);
+      if (data !== undefined) {
+        setIdMessage('아이디는 4~20자의 영문, 숫자, 특수문자로 구성되어야합니다');
+        setIdExist(false);
+      }
     }
-  };
+  }, [data]);
 
+  // 아이디 중복 확인 이후 입력 값 변경 시 재확인 시키기
   useEffect(() => {
     setIdExist(false);
   }, [username]);
 
-  // 휴대폰 인증 관련
+  // 인증 번호 요청 Fetch
   const getNumber = () => {
     setIsGetNumber(true);
     console.log('fetching..');
     setRealNumber('0000');
   };
 
+  // 인증 번호 일치 여부 확인
   const checkNumber = () => {
     setIsVerified(true);
     return;
@@ -134,7 +157,7 @@ const Join: NextPage = ({ result }: any) => {
     }
   };
 
-  // 개인 정보 활용
+  // 개인 정보 활용 토글
   const toggleAgree = () => {
     setIsAgree((prev) => !prev);
   };
@@ -142,10 +165,12 @@ const Join: NextPage = ({ result }: any) => {
   // 주소 검색 관련
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
+  // 주소 검색 모달 토글
   const togglePopup = () => {
     setIsPopupOpen((current) => !current);
   };
 
+  // 주소 검색 완료 시
   const onCompletePost = (data: any) => {
     setValue('address', `[${data?.zonecode}] ${data?.roadAddress}`);
     togglePopup();
@@ -168,13 +193,15 @@ const Join: NextPage = ({ result }: any) => {
                   regExp.id.test(value) || '4~20자의 영문, 숫자로 이루어저야합니다',
               })}
             />
-            <Button type="button" onClick={() => checkUsername(username)}>
+            <Button type="button" onClick={() => checkUsername()}>
               확인
             </Button>
           </InputWithButton>
-          <Message kind="id" approve={idExist}>
-            {idMessage}
-          </Message>
+          {idMessage ? (
+            <Message kind="id" approve={idExist}>
+              {idMessage}
+            </Message>
+          ) : null}
           <Input
             type="password"
             place="비밀번호"
@@ -264,13 +291,13 @@ const Join: NextPage = ({ result }: any) => {
             name="addressDetail"
             register={register('addressDetail', { required: true })}
           />
-          <Message kind="error">{errorMessage}</Message>
+          {errorMessage ? <Message kind="error">{errorMessage}</Message> : null}
           {/* <ButtonBig>가입하기</ButtonBig> */}
-          {/* <AgreeInput htmlFor="agree" active={isAgrre}>
+          <AgreeInput htmlFor="agree" active={isAgrre}>
             <div />
             <input type="checkbox" id="agree" onClick={toggleAgree} />
             개인 정보 활용에 동의합니다.
-          </AgreeInput> */}
+          </AgreeInput>
           <ButtonBig>가입하기</ButtonBig>
         </form>
       </FormLayout>

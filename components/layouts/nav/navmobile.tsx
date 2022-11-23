@@ -1,19 +1,25 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
-import { useRecoilValue } from 'recoil';
-import { LoginState } from '../store';
+import { useRecoilState } from 'recoil';
+import useSWR from 'swr';
+import { BASE_URL } from '../../../constants/server';
+import fetchForAuth from '../../../libs/server/fetchForAuth';
+import { MenuState } from '../../../store';
+import { NavBarData } from './navbar';
 
-interface NavMenuProps {
-  menuState: boolean;
-  menuToggle: () => void;
-}
+const NavMobile = ({ status, error }: any) => {
+  // const { data, error } = useSWR(`${BASE_URL}/auth/check`, fetchForAuth);
 
-const NavMenu = ({ menuState, menuToggle }: NavMenuProps) => {
-  const loginState = useRecoilValue(LoginState);
+  const [menu, setMenu] = useRecoilState(MenuState);
+
+  const toggleMenu = () => {
+    setMenu((prev) => !prev);
+  };
+
   return (
-    <NavWrapper>
-      <button onClick={menuToggle}>
-        {menuState ? (
+    <NavMobileWrapper>
+      <button onClick={toggleMenu}>
+        {menu ? (
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -39,8 +45,8 @@ const NavMenu = ({ menuState, menuToggle }: NavMenuProps) => {
           </svg>
         )}
       </button>
-      {menuState ? (
-        <ul onClick={menuToggle}>
+      {menu ? (
+        <ul onClick={toggleMenu}>
           <li>
             <Link href="/intro">소개</Link>
           </li>
@@ -48,13 +54,10 @@ const NavMenu = ({ menuState, menuToggle }: NavMenuProps) => {
             <Link href="/product">상품</Link>
           </li>
           <li>
-            <Link href="/style">스타일</Link>
-          </li>
-          <li>
             <Link href="/subscribe">구독</Link>
           </li>
           <li>
-            {loginState ? (
+            {!status && !error ? null : status?.ok ? (
               <Link href="/profile">마이페이지</Link>
             ) : (
               <Link href="/login">로그인</Link>
@@ -62,13 +65,13 @@ const NavMenu = ({ menuState, menuToggle }: NavMenuProps) => {
           </li>
         </ul>
       ) : null}
-    </NavWrapper>
+    </NavMobileWrapper>
   );
 };
 
-export default NavMenu;
+export default NavMobile;
 
-const NavWrapper = styled.nav`
+const NavMobileWrapper = styled.nav`
   display: flex;
   justify-content: flex-end;
 

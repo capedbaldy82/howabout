@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { UseFormRegisterReturn } from 'react-hook-form';
-import media from '../libs/client/media';
+import media from '../../libs/client/media';
 
 interface InputProps {
   type?: string;
