@@ -4,6 +4,11 @@ import { useForm } from 'react-hook-form';
 import Input from '../../common/input';
 import media from '../../../libs/client/media';
 import ButtonBig from '../../common/buttonBig';
+import useFileUpload from '../../../libs/server/useFileUpload';
+import { BASE_URL } from '../../../constants/server';
+import cookies from 'react-cookies';
+import Textarea from '../../common/testarea';
+import useMutation from '../../../libs/server/useMutation';
 
 interface ProductForm {
   name: string;
@@ -20,8 +25,39 @@ const CreateProduct = () => {
   const { register, handleSubmit, watch } = useForm<ProductForm>();
   const [productPreview, setProductPreview] = useState('');
   const productImage = watch('image');
+  const [upload, { data, loading }] = useMutation(
+    'POST',
+    `${BASE_URL}/product/`,
+    cookies.load('accessToken')
+  );
 
-  const onValid = (value: ProductForm) => {
+  const onValid = async (value: ProductForm) => {
+    if (loading) return;
+
+    const token = cookies.load('accessToken');
+
+    const response = await fetch(`${BASE_URL}/auth/fileurl`, {
+      method: 'GET',
+      headers: { 'content-type': 'application/json', Authorization: `Bearer ${token}` },
+    });
+
+    const { uploadURL } = await response.json();
+
+    const form = new FormData();
+    form.append('file', value.image[0], value.name);
+    const res = await fetch(uploadURL, { method: 'POST', body: form });
+
+    const result = await res.json();
+
+    const productImageURL = result.result.variants[1];
+
+    upload({
+      ...value,
+      rank: +value.rank,
+      status: !!value.status,
+      image: productImageURL,
+    });
+
     console.log(value);
   };
 
@@ -34,7 +70,7 @@ const CreateProduct = () => {
       const file = productImage[0];
       console.log(file);
 
-      // setProductPreview(URL.createObjectURL(file));
+      setProductPreview(URL.createObjectURL(file));
     }
   }, [productImage]);
 
@@ -57,7 +93,12 @@ const CreateProduct = () => {
               />
             </svg>
           )}
-          <input {...register('image')} id="picture" type="file" accept="image/*" />
+          <input
+            {...register('image', { required: true })}
+            id="picture"
+            type="file"
+            accept="image/*"
+          />
         </label>
       </ProductImageRegister>
       <Input register={register('name', { required: true })} name="name" place="상품명" />
@@ -66,7 +107,7 @@ const CreateProduct = () => {
       <Input register={register('status', { required: true })} name="status" place="상태" />
       <Input register={register('until', { required: true })} name="until" place="대여기간" />
       <Input register={register('rank', { required: true })} name="rank" place="등급" />
-      <Input
+      <Textarea
         register={register('description', { required: true })}
         name="description"
         place="상품설명"
