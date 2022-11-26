@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface Product {
   id: number;
@@ -35,10 +36,26 @@ const AdminProductItem = ({
           <p>{brand}</p>
           <p>{type}</p>
           <p>{rank}</p>
-          <p>{status ? '가능 ' : '불가능'}</p>
+          <p>{status ? '가능 ' : `불가능 :${until}`}</p>
         </ProductInfo>
         <ProductControl>
-          <button>수정하기</button>
+          <Link
+            href={{
+              pathname: `/admin/product/${id}`,
+              query: {
+                name,
+                brand,
+                type,
+                image,
+                status,
+                until,
+                rank,
+                description,
+              },
+            }}
+            as={`/admin/product/${id}`}>
+            수정하기
+          </Link>
           <button>삭제하기</button>
         </ProductControl>
       </ProductContent>
