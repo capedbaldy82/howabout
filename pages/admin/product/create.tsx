@@ -21,17 +21,17 @@ interface Product {
 const AdminProductCreate = () => {
   return (
     <AdminLayout>
-      <AdminProductWrapper>
+      <AdminProductCreateWrapper>
         <Heading>상품 등록</Heading>
         <CreateProduct />
-      </AdminProductWrapper>
+      </AdminProductCreateWrapper>
     </AdminLayout>
   );
 };
 
 export default AdminProductCreate;
 
-const AdminProductWrapper = styled.div`
+const AdminProductCreateWrapper = styled.div`
   border: 1px solid blue;
   display: flex;
   flex-direction: column;
