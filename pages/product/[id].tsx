@@ -5,7 +5,7 @@ import { useState } from 'react';
 import useSWR from 'swr';
 
 import { representative } from '../../constants/style';
-import media from '../../libs/client/media';
+import media from '../../libs/media';
 
 import Product from '.';
 
@@ -24,7 +24,10 @@ const ProductDetail: NextPage = () => {
     <ProductDetailWrapper>
       <ProductSummary>
         <ImageWrapper>
-          <img src={data?.image} alt="상품 사진" />
+          <img
+            src={`https://imagedelivery.net/nJK6oMiGlswmnGc8M5OUDA/${data?.image}/product`}
+            alt="상품 사진"
+          />
         </ImageWrapper>
         <InfoWrapper>
           <div>

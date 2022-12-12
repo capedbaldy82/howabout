@@ -12,7 +12,10 @@ const NewRelease = () => {
         {data &&
           data?.slice(0, 8).map((product) => (
             <Plane key={product.id}>
-              <img src={product.image} alt="새 상품" />
+              <img
+                src={`https://imagedelivery.net/nJK6oMiGlswmnGc8M5OUDA/${product.image}/product`}
+                alt="새 상품"
+              />
             </Plane>
           ))}
       </Carousel>
