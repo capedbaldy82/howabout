@@ -2,22 +2,22 @@ import { NextPage } from 'next';
 import { useForm } from 'react-hook-form';
 import styled from '@emotion/styled';
 
-import Input from '../components/common/input';
-import Slogan from '../components/common/slogan';
+import Input from '@components/common/input';
+import Slogan from '@components/common/slogan';
 import Link from 'next/link';
-import ButtonBig from '../components/common/buttonBig';
-import Line from '../components/common/line';
-import media from '../libs/client/media';
+import ButtonBig from '@components/common/buttonBig';
+import Line from '@components/common/line';
+import media from '../libs/media';
 import { useState, useEffect } from 'react';
-import FormLayout from '../components/layouts/formlayout';
+import FormLayout from '@components/layouts/formlayout';
 import { useSetRecoilState } from 'recoil';
 import { LoginState, MenuState } from '../store';
-import useMutation from '../libs/server/useMutation';
+import useMutation from '../hooks/useMutation';
 import { useRouter } from 'next/router';
-import { setCookie } from '../libs/client/handleCookie';
+import { setCookie } from '../libs/handleCookie';
 import { useSWRConfig } from 'swr';
 import { BASE_URL } from '../constants/server';
-import fetchForAuth from '../libs/server/fetchForAuth';
+import fetchForAuth from '../libs/fetchForAuth';
 
 interface LoginForm {
   username: string;
@@ -65,8 +65,6 @@ const Login: NextPage = () => {
 
   // 로그인 폼 인증 성공 시
   useEffect(() => {
-    console.log('data');
-    console.log(data);
     if (data?.ok) {
       mutate(`${BASE_URL}/auth/check`, fetchForAuth, true);
       setCookie('accessToken', data.accessToken);

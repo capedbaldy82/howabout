@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
-import media from '../../libs/client/media';
+import media from '../../libs/media';
 
 interface IntroPostProps {
   src: string;

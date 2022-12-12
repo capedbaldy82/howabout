@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
-import media from '../libs/client/media';
+import media from '../../libs/media';
 
 interface ItemProps {
   id: number;
@@ -16,15 +16,18 @@ const ProductItem = ({ id, image, brand, rank, status, name }: ItemProps) => {
     <Link href={`/product/${id}`}>
       <ItemWrapper>
         <div>
-          <img src={image} alt="상품 사진" />
+          <StatusMark status={status} />
+          <img
+            src={`https://imagedelivery.net/nJK6oMiGlswmnGc8M5OUDA/${image}/product`}
+            alt="상품 사진"
+          />
         </div>
         <TextContents>
-          <p>{brand}</p>
-          <p>{name}</p>
           <div>
+            <p>{brand}</p>
             <p>{rank}</p>
-            <p> [{status ? '가능' : '불가'}]</p>
           </div>
+          <p>{name}</p>
         </TextContents>
       </ItemWrapper>
     </Link>
@@ -33,7 +36,18 @@ const ProductItem = ({ id, image, brand, rank, status, name }: ItemProps) => {
 
 export default ProductItem;
 
+const StatusMark = styled.div<{ status: boolean }>`
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  top: 10px;
+  left: 10px;
+  background-color: ${({ status }) => (status ? '#1DDB16' : '#FF0000')};
+`;
+
 const ItemWrapper = styled.div`
+  position: relative;
   flex-basis: 49%;
   flex-grow: 1;
   flex-shrink: 1;
@@ -66,13 +80,21 @@ const TextContents = styled.div`
   padding: 1rem;
   line-height: 1.2rem;
 
-  & > p:first-of-type {
-    font-family: serif;
-    font-weight: 600;
+  & > div {
+    display: flex;
+    justify-content: space-between;
+
+    & > p:first-of-type {
+      font-family: serif;
+      font-weight: 600;
+    }
+
+    & > p:last-of-type {
+    }
   }
 
-  & > p:nth-of-type(2) {
-    font-size: 14px;
+  & > p:last-of-type {
+    font-size: 13px;
   }
 
   & > div {

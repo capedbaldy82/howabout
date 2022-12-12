@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useRecoilState } from 'recoil';
 import useSWR from 'swr';
 import { BASE_URL } from '../../../constants/server';
-import fetchForAuth from '../../../libs/server/fetchForAuth';
+import fetchForAuth from '../../../libs/fetchForAuth';
 import { MenuState } from '../../../store';
 import { NavBarData } from './navbar';
 

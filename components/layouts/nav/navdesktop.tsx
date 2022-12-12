@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Suspense } from 'react';
 import useSWR from 'swr';
 import { BASE_URL } from '../../../constants/server';
-import fetchForAuth from '../../../libs/server/fetchForAuth';
+import fetchForAuth from '../../../libs/fetchForAuth';
 import { NavBarData } from './navbar';
 
 const NavDesktop = ({ status, error }: any) => {

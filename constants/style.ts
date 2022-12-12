@@ -7,11 +7,10 @@ const modalStyle = {
     backgroundColor: 'rgba(0,0,0,0.5)',
   },
   content: {
-    left: '0',
     margin: 'auto',
     width: '100%',
     maxWidth: '500px',
-    height: '500px',
+    height: '403px',
     padding: '0',
     overflow: 'hidden',
   },

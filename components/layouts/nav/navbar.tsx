@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import useSWR from 'swr';
 import { BASE_URL } from '../../../constants/server';
-import { sizes } from '../../../libs/client/media';
-import fetchForAuth from '../../../libs/server/fetchForAuth';
+import { sizes } from '../../../libs/media';
+import fetchForAuth from '../../../libs/fetchForAuth';
 import NavDesktop from './navdesktop';
 import NavMobile from './navmobile';
 

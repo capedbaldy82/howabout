@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import { representative } from '../../constants/style';
-import media from '../../libs/client/media';
+import media from '../../libs/media';
 
 const Banner = () => {
   return (
