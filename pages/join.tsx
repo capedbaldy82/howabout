@@ -2,19 +2,20 @@ import styled from '@emotion/styled';
 import { NextPage } from 'next';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import Input from '../components/common/input';
-import FormLayout from '../components/layouts/formlayout';
-import Slogan from '../components/common/slogan';
-import media from '../libs/client/media';
+import Input from '@components/common/input';
+import FormLayout from '@components/layouts/formlayout';
+import Slogan from '@components/common/slogan';
+import media from '../libs/media';
 import DaumPostcode from 'react-daum-postcode';
 import Modal from 'react-modal';
 import { BASE_URL } from '../constants/server';
 import { modalStyle } from '../constants/style';
 import { regExp } from '../constants/regexp';
-import ButtonBig from '../components/common/buttonBig';
+import ButtonBig from '@components/common/buttonBig';
 import { useEffect } from 'react';
 import useSWR from 'swr';
-import useMutation from '../libs/server/useMutation';
+import useMutation from '../hooks/useMutation';
+import { useRouter } from 'next/router';
 
 interface JoinForm {
   username: string;
@@ -47,7 +48,7 @@ const Join: NextPage = () => {
   // 개인 정보 동의
   const [isAgrre, setIsAgree] = useState(false);
   // 휴대폰 인증 완료 상태
-  const [isVerified, setIsVerified] = useState(false);
+  const [isVerified, setIsVerified] = useState(true);
   // 인증 번호 요청
   const [isGetNumber, setIsGetNumber] = useState(false);
   // 실제 인증 번호
@@ -58,6 +59,8 @@ const Join: NextPage = () => {
   const [idMessage, setIdMessage] = useState('');
   // 아이디 외 유효성 관련 메세지
   const [errorMessage, setErrorMessage] = useState('');
+  // 이름 유효성 상태
+  const [isNameOk, setIsNameOk] = useState(false);
 
   // 아이디 중복 체크 시 아규먼트
   const username = watch('username');
@@ -65,18 +68,27 @@ const Join: NextPage = () => {
   const phone = watch('phone');
   // 비밀번호 확인 일치 여부 비교 값
   const password = watch('password');
+  // 이름 유효성 검사
+  const name = watch('name');
   // 사용자가 입력한 인증 번호 값
   const userNumber = watch('usernumber');
+  // 회원가입 성공 시 홈으로 이동
+  const router = useRouter();
+
+  const [join, { data: joinData }] = useMutation('POST', `${BASE_URL}/auth/signup`);
 
   // useForm 기본 유효성 검사 통과 시
   const onValid = (validForm: JoinForm) => {
     if (!idExist) {
-      setErrorMessage('아이디 중복 확인을 해주세요');
+      setIdMessage('아이디 중복 확인을 해주세요');
       return null;
     }
     if (!isVerified) {
       setErrorMessage('휴대폰 인증을 해주세요');
       return null;
+    }
+    if (!isNameOk) {
+      setErrorMessage('이름은 한글/영문/숫자로 이루어진 2~10 글자로 해주세요.');
     }
     if (!isAgrre) {
       setErrorMessage('개인 정보 동의를 해주세요');
@@ -85,7 +97,25 @@ const Join: NextPage = () => {
 
     setErrorMessage('');
 
-    console.log(validForm);
+    console.log({
+      username: validForm.username,
+      password: validForm.password,
+      name: validForm.name,
+      phone: validForm.phone,
+      address: `${validForm.address} ${validForm.addressDetail}`,
+    });
+
+    join({
+      username: validForm.username,
+      password: validForm.password,
+      name: validForm.name,
+      phone: `${validForm.phone}`,
+      address: `${validForm.address} ${validForm.addressDetail}`,
+    });
+
+    console.log(joinData);
+
+    router.replace('/');
   };
 
   // useForm 기본 유효성 검사 실패 시
@@ -133,7 +163,16 @@ const Join: NextPage = () => {
   // 아이디 중복 확인 이후 입력 값 변경 시 재확인 시키기
   useEffect(() => {
     setIdExist(false);
+    if (regExp.id.test(username)) {
+      setIdMessage('아이디 중복 확인을 해주세요');
+    } else {
+      setIdMessage('아이디는 4~20자의 영문, 숫자, 특수문자로 구성되어야합니다');
+    }
   }, [username]);
+
+  useEffect(() => {
+    setIsNameOk(false);
+  }, [name]);
 
   // 인증 번호 요청 Fetch
   const getNumber = () => {
@@ -292,7 +331,6 @@ const Join: NextPage = () => {
             register={register('addressDetail', { required: true })}
           />
           {errorMessage ? <Message kind="error">{errorMessage}</Message> : null}
-          {/* <ButtonBig>가입하기</ButtonBig> */}
           <AgreeInput htmlFor="agree" active={isAgrre}>
             <div />
             <input type="checkbox" id="agree" onClick={toggleAgree} />
