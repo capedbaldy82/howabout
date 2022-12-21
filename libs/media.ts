@@ -20,7 +20,7 @@ const media = Object.keys(sizes).reduce((acc: any, label: string) => {
   return acc;
 }, {});
 
-export const customMedia = (size: number) => {
+const customMedia = (size: number) => {
   const custom = (...args: any) => css`
     @media screen and (min-width: ${size}px) {
       ${css(...args)};
@@ -29,5 +29,7 @@ export const customMedia = (size: number) => {
 
   return custom;
 };
+
+export { customMedia };
 
 export default media;
