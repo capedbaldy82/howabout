@@ -22,9 +22,9 @@ const useAdminCheck = () => {
 
       const result = await response.json();
 
-      console.log(result.username);
+      console.log(result);
 
-      if (result.username === 'admin') {
+      if (result.name === 'admin') {
       } else {
         router.replace('/product');
       }
