@@ -18,7 +18,7 @@ interface Product {
 }
 
 const Product: NextPage = () => {
-  const { data, error } = useSWR<Product[]>(`https://howabout.site/product/`);
+  const { data, error } = useSWR<Product[]>(`https://howabout.site/product`);
 
   return (
     <HomeWrapper>
