@@ -11,7 +11,7 @@ import media from '../libs/media';
 import { useState, useEffect } from 'react';
 import FormLayout from '@components/layouts/formlayout';
 import { useSetRecoilState } from 'recoil';
-import { LoginState, MenuState } from '../store';
+import { MenuState } from '../store';
 import useMutation from '../hooks/useMutation';
 import { useRouter } from 'next/router';
 import { setCookie } from '../libs/handleCookie';
