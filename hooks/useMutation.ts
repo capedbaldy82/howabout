@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import cookies from 'react-cookies';
 
 interface UseMutationState<T> {
   loading: boolean;
@@ -25,7 +26,7 @@ const useMutation = <T = any>(
       method: method,
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `JWT ${token}`,
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(data),
     })

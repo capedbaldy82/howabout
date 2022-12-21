@@ -1,65 +1,56 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
-import useSWR from 'swr';
-import AdminLayout from '../../../components/admin/adminLayout';
-import Heading from '../../../components/admin/heading';
-import AdminProductItem from '../../../components/admin/product/adminProductItem';
-import { BASE_URL } from '../../../constants/server';
-
-interface Product {
-  id: number;
-  name: string;
-  brand: string;
-  type: string;
-  image: string;
-  status: boolean;
-  until: string;
-  rank: number;
-  description: string;
-}
+import AdminLayout from '../../../components/admin/common/adminLayout';
+import Heading from '../../../components/admin/common/heading';
+import AdminProductList from '@components/admin/product/adminProductList';
+import useLoggedIn from '@hooks/useLoggedIn';
+import media from '@libs/media';
+import { useLayoutEffect } from 'react';
+import { useRouter } from 'next/router';
+import { BASE_URL } from '@constants/server';
+import useAdminCheck from '@hooks/useAdminCheck';
 
 const AdminProduct = () => {
-  const { data } = useSWR(`${BASE_URL}/product`);
+  const user = useLoggedIn();
+  const admincheck = useAdminCheck();
 
   return (
     <AdminLayout>
-      <AdminProductWrapper>
-        <Heading>상품 관리</Heading>
-        <div>
+      <Heading>상품 관리</Heading>
+      <ProductAddtionalControl>
+        <ProductCreateButton>
           <Link href="/admin/product/create">상품 등록</Link>
-        </div>
-        <ProductList>
-          {data &&
-            data.map((product: Product) => (
-              <AdminProductItem
-                id={product.id}
-                name={product.name}
-                brand={product.brand}
-                type={product.type}
-                image={product.image}
-                status={product.status}
-                until={product.until}
-                rank={product.rank}
-                description={product.description}
-              />
-            ))}
-        </ProductList>
-      </AdminProductWrapper>
+        </ProductCreateButton>
+      </ProductAddtionalControl>
+      <AdminProductList />
     </AdminLayout>
   );
 };
 
 export default AdminProduct;
 
-const AdminProductWrapper = styled.div`
-  border: 1px solid blue;
-  display: flex;
-  flex-direction: column;
+const ProductAddtionalControl = styled.div`
   width: 100%;
+  display: flex;
+  justify-content: flex-end;
 `;
 
-const ProductList = styled.ul`
+const ProductCreateButton = styled.div`
   display: flex;
-  flex-direction: column;
-  width: 100%;
+  justify-content: center;
+  width: 12.5%;
+
+  & a {
+    margin-bottom: 24px;
+    padding: 6px;
+    ${media.tablet`padding:10px`};
+    max-width: 80px;
+    border-radius: 2.5px;
+    background-color: #000;
+    color: #fff;
+    font-size: 12px;
+    ${media.tablet`font-size:14px`}
+    font-family: 'MICEGothic';
+    text-align: center;
+  }
 `;

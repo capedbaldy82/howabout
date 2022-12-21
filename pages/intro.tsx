@@ -2,9 +2,9 @@ import styled from '@emotion/styled';
 import { GetStaticProps, NextPage } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import IntroPost from '../components/intro/introPost';
+import IntroPost from '@components/intro/introPost';
 import { representative } from '../constants/style';
-import media from '../libs/client/media';
+import media from '../libs/media';
 
 interface IntroPostType {
   id: number;

@@ -5,7 +5,7 @@
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
-    "forceConsistentCasingInFileNames": true,
+    "forceConsistentCasingInFileNames": false,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
@@ -13,7 +13,20 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "incremental": true
+    "incremental": true,
+    "types": ["@emotion/react/types/css-prop"],
+    "baseUrl": ".",
+    "paths": {
+      "@libs/*": ["libs/*"],
+      "@components/*": ["components/*"],
+      "@constants/*": ["constants/*"],
+      "@hooks/*": ["hooks/*"],
+      "@store/*": ["store/*"],
+      "@style/*": ["style/*"],
+      "@fonts/*": ["fonts/*"],
+      "@types/*": ["types/*"],
+      "@config/*": ["config/*"]
+    }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]

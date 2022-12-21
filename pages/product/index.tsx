@@ -3,7 +3,7 @@ import type { NextPage } from 'next';
 import styled from '@emotion/styled';
 import useSWR from 'swr';
 
-import ProductItem from '../../components/productItem';
+import ProductItem from '../../components/product/productItem';
 
 interface Product {
   id: number;
@@ -18,7 +18,7 @@ interface Product {
 }
 
 const Product: NextPage = () => {
-  const { data, error } = useSWR<Product[]>(`https://howabout.site/product/`);
+  const { data, error } = useSWR<Product[]>(`https://howabout.site/product`);
 
   return (
     <HomeWrapper>

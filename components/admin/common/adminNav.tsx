@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { ADMIN_CATEGORY_ARRAY, ADMIN_CATEGORY_OBJECT } from '../../constants/admin';
+import { ADMIN_CATEGORY_ARRAY, ADMIN_CATEGORY_OBJECT } from '../../../constants/admin';
+import media from '@libs/media';
 
 const AdminNav = () => {
   const router = useRouter();
@@ -23,14 +24,23 @@ export default AdminNav;
 
 const AdminNavWrapper = styled.nav<{ route: string }>`
   padding: 16px;
-  width: 20%;
-  margin-right: 5%;
+  width: 100%;
+  ${media.tablet`width: 20%`};
+  ${media.tablet`margin-right: 5%`};
+  border: 1px solid red;
+  font-size: 14px;
+  ${media.tablet`font-size:16px`};
 
   & > ul {
+    display: flex;
+    ${media.tablet`display:block`};
     & > li {
       display: flex;
       justify-content: center;
       padding: 8px;
+      border: 1px solid green;
+      width: calc(100% / ${ADMIN_CATEGORY_ARRAY.length});
+      ${media.tablet`width:auto`};
     }
 
     &
@@ -41,8 +51,10 @@ const AdminNavWrapper = styled.nav<{ route: string }>`
             }
           }
         }}) {
-      font-size: 18px;
-      font-weight: 700;
+      font-size: 16px;
+      font-weight: 600;
+      ${media.tablet`font-size:18px`};
+      ${media.tablet`font-weight:700px`};
     }
   }
 `;

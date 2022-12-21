@@ -3,7 +3,7 @@ import { GetStaticProps, NextPage } from 'next';
 import Image from 'next/image';
 import { useState } from 'react';
 import { representative } from '../constants/style';
-import media from '../libs/client/media';
+import media from '../libs/media';
 
 const Subscribe: NextPage = () => {
   const [membership, setMembership] = useState(1);

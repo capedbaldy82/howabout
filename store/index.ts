@@ -5,16 +5,4 @@ const MenuState = atom<boolean>({
   default: false,
 });
 
-const LoginState = atom<boolean>({
-  key: 'LoginState',
-  default: false,
-});
-
-const ProfileState = atom({
-  key: 'ProfileState',
-  default: {
-    name: '',
-  },
-});
-
-export { MenuState, LoginState, ProfileState };
+export { MenuState };

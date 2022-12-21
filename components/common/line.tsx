@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import media from '../../libs/client/media';
+import media from '../../libs/media';
 
 const Line = () => {
   return (

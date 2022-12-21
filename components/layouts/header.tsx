@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { MenuState } from '../../store';
 import Link from 'next/link';
-import media, { sizes } from '../../libs/client/media';
+import media, { sizes } from '../../libs/media';
 import NavMobile from './nav/navmobile';
 import NavDesktop from './nav/navdesktop';
 import { Suspense } from 'react';

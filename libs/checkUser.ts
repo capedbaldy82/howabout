@@ -1,4 +1,4 @@
-import { BASE_URL } from '../../constants/server';
+import { BASE_URL } from '../constants/server';
 import cookies from 'react-cookies';
 
 interface CheckUserResult {

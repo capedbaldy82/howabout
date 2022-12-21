@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import React from 'react';
-import media from '../../libs/client/media';
+import media from '../../libs/media';
 
 interface ButtonProps {
   children: string | React.ReactNode;
