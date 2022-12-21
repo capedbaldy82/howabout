@@ -39,6 +39,7 @@ const BannerWrapper = styled.article`
 
     & > p {
       white-space: nowrap;
+      font-family: 'MICEGothic';
 
       font-size: 28px;
       ${media.tablet`font-size:48px`};
