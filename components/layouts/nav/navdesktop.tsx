@@ -20,6 +20,11 @@ const NavDesktop = ({ status, error }: any) => {
       <li>
         <Link href="/subscribe">구독</Link>
       </li>
+      {!status && !error ? null : status?.ok ? (
+        <li>
+          <Link href="/cart">장바구니</Link>
+        </li>
+      ) : null}
       <Suspense>
         <li>
           {!status && !error ? null : status?.ok ? (
