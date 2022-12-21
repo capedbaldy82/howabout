@@ -1,19 +1,18 @@
 import styled from '@emotion/styled';
 import { NextPage } from 'next';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import Modal from 'react-modal';
+import DaumPostcode from 'react-daum-postcode';
+
 import Input from '@components/common/input';
 import FormLayout from '@components/layouts/formlayout';
 import Slogan from '@components/common/slogan';
 import media from '../libs/media';
-import DaumPostcode from 'react-daum-postcode';
-import Modal from 'react-modal';
 import { BASE_URL } from '../constants/server';
 import { modalStyle } from '../constants/style';
 import { regExp } from '../constants/regexp';
 import ButtonBig from '@components/common/buttonBig';
-import { useEffect } from 'react';
-import useSWR from 'swr';
 import useMutation from '../hooks/useMutation';
 import { useRouter } from 'next/router';
 
@@ -158,7 +157,7 @@ const Join: NextPage = () => {
         setIdExist(false);
       }
     }
-  }, [data]);
+  }, [data, username]);
 
   // 아이디 중복 확인 이후 입력 값 변경 시 재확인 시키기
   useEffect(() => {
