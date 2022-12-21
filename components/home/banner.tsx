@@ -11,10 +11,11 @@ const Banner = () => {
         <p>당신의 새로운 스타일을 위한</p>
         <p>부담없는 경험</p>
         <p>HowAbout</p>
+        <p>현재 개발 중입니다.</p>
       </div>
       <div>
-        <Link href="/product">상품 둘러보기</Link>
-        <Link href="/style">스타일 둘러보기</Link>
+        {/* <Link href="/product">상품 둘러보기</Link>
+        <Link href="/style">스타일 둘러보기</Link> */}
       </div>
     </BannerWrapper>
   );
@@ -41,6 +42,11 @@ const BannerWrapper = styled.article`
 
       font-size: 28px;
       ${media.tablet`font-size:48px`};
+    }
+
+    & > p:last-of-type {
+      font-size: 28px;
+      color: red;
     }
   }
 
