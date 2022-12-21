@@ -13,7 +13,13 @@ interface IntroPostProps {
 const IntroPost = ({ src, alt, content, width, height }: IntroPostProps) => {
   return (
     <IntroPostWrapper>
-      <Image src={src} alt={alt} width={width || 550} height={height || 350} layout="intrinsic" />
+      <Image
+        src={src}
+        alt={alt}
+        width={width || 412.5}
+        height={height || 262.5}
+        layout="intrinsic"
+      />
       <p>{content}</p>
       <br />
     </IntroPostWrapper>
