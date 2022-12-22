@@ -109,6 +109,7 @@ const NavMobileWrapper = styled.nav`
   & > ul {
     width: 100%;
     position: absolute;
+    z-index: 10;
     top: 60px;
     right: 0;
     border-top: 1px solid black;
