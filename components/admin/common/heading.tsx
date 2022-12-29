@@ -18,6 +18,4 @@ const Heading3 = styled.h3<{ line: boolean }>`
   border-bottom: ${({ line }) => (line ? '3px solid black' : 'none')};
   font-size: 24px;
   font-weight: 600;
-  margin-left: 16px;
-  margin-right: 16px;
 `;
