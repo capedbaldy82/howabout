@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import Image from 'next/image';
 import Link from 'next/link';
 import media from '../../libs/media';
 
@@ -11,15 +12,22 @@ interface ItemProps {
   rank: number;
 }
 
+const blurDataURL =
+  'data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAQAAAAnOwc2AAAAEUlEQVR42mNk0GXAAIxDWRAAzNgBzTyq6PQAAAAASUVORK5CYII=';
+
 const ProductItem = ({ id, image, brand, rank, status, name }: ItemProps) => {
   return (
     <Link href={`/product/${id}`}>
       <ItemWrapper>
         <div>
           <StatusMark status={status} />
-          <img
+          <Image
             src={`https://imagedelivery.net/nJK6oMiGlswmnGc8M5OUDA/${image}/product`}
             alt="상품 사진"
+            width={320}
+            height={300}
+            placeholder="blur"
+            blurDataURL={blurDataURL}
           />
         </div>
         <TextContents>
@@ -44,6 +52,7 @@ const StatusMark = styled.div<{ status: boolean }>`
   top: 10px;
   left: 10px;
   background-color: ${({ status }) => (status ? '#1DDB16' : '#FF0000')};
+  z-index: 5;
 `;
 
 const ItemWrapper = styled.div`
@@ -55,12 +64,6 @@ const ItemWrapper = styled.div`
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
   margin-bottom: 2%;
   cursor: pointer;
-
-  &:hover {
-    transform: scale(1.025);
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-    transition: 0.3s all ease-out;
-  }
 
   ${media.tablet`flex-basis:30%`}
   ${media.tablet`max-width:32%`}

@@ -39,6 +39,7 @@ const ProductCreateButton = styled.div`
   display: flex;
   justify-content: center;
   width: 12.5%;
+  min-width: 60px;
 
   & a {
     margin-bottom: 24px;

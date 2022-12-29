@@ -1,14 +1,19 @@
 import Heading from '@components/admin/common/heading';
 import AdminLayout from '@components/admin/common/adminLayout';
 import styled from '@emotion/styled';
-import useLoggedIn from '@hooks/useLoggedIn';
+import useAdminCheck from '@hooks/useAdminCheck';
+import UserList from '@components/admin/user/userList';
+import useSWRLogin from '@hooks/useSWRLogin';
 
 const User = () => {
-  const user = useLoggedIn();
+  const user = useAdminCheck();
+  const login = useSWRLogin();
+
   return (
     <AdminLayout>
       <AdminUserWrapper>
         <Heading>회원 관리</Heading>
+        <UserList />
       </AdminUserWrapper>
     </AdminLayout>
   );

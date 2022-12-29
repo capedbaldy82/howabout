@@ -23,22 +23,29 @@ const AdminNav = () => {
 export default AdminNav;
 
 const AdminNavWrapper = styled.nav<{ route: string }>`
-  padding: 16px;
+  background-color: white;
+  position: sticky;
+  top: 0px;
+  left: 0px;
+  ${media.tablet`position:relative`};
   width: 100%;
+  min-width: 140px;
   ${media.tablet`width: 20%`};
   ${media.tablet`margin-right: 5%`};
-  border: 1px solid red;
   font-size: 14px;
   ${media.tablet`font-size:16px`};
 
   & > ul {
+    position: static;
+    ${media.tablet`position:sticky`};
+    top: 16px;
+    left: 0px;
     display: flex;
     ${media.tablet`display:block`};
     & > li {
       display: flex;
       justify-content: center;
-      padding: 8px;
-      border: 1px solid green;
+      padding: 16px;
       width: calc(100% / ${ADMIN_CATEGORY_ARRAY.length});
       ${media.tablet`width:auto`};
     }

@@ -21,6 +21,7 @@ const useMutation = <T = any>(
   });
 
   function mutation(data: any) {
+    const token = cookies.load('accessToken');
     setState((prev) => ({ ...prev, loading: true }));
     fetch(url, {
       method: method,

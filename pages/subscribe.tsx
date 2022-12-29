@@ -1,15 +1,60 @@
+import { BASE_URL } from '@constants/server';
 import styled from '@emotion/styled';
-import { GetStaticProps, NextPage } from 'next';
+import useLoggedIn from '@hooks/useLoggedIn';
+import useMutation from '@hooks/useMutation';
+import fetchWithAuth from '@libs/fetchWithAuth';
+import { NextPage } from 'next';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
+import useSWR from 'swr';
 import { representative } from '../constants/style';
 import media from '../libs/media';
 
+const subscribeMenu = ['basic', 'standard', 'premium'];
+
 const Subscribe: NextPage = () => {
-  const [membership, setMembership] = useState(1);
+  const [membership, setMembership] = useState(0);
+  const isLoggined = useLoggedIn();
+  const router = useRouter();
+  const { data: userData } = useSWR(`${BASE_URL}/auth/userinfo`, fetchWithAuth);
+  const [apply, { data, loading, error }] = useMutation('POST', `${BASE_URL}/auth/subscribe/apply`);
 
   const selectMembership = (type: number): void => {
     setMembership(type);
+  };
+
+  console.log(userData);
+
+  const applySubscribe = (value: number) => {
+    if (!isLoggined) {
+      if (window.confirm('로그인 후 이용해주세요.\n로그인 페이지로 이동하시겠습니까?')) {
+        router.push('/login');
+      }
+      return;
+    }
+    if (loading) return;
+    if (userData?.apply && userData?.apply !== 'denied') {
+      alert('이미 신청된 상태입니다.\n취소는 마이페이지를 이용해주세요.');
+      return;
+    }
+    if (userData?.tier !== 'none') {
+      alert('이미 구독된 상태입니다.\n변경 및 취소는 마이페이지를 이용해주세요.');
+      return;
+    }
+
+    const tierForUser = subscribeMenu[value].replace(/^[a-z]/, (char) => char.toUpperCase());
+
+    if (!window.confirm(`${tierForUser} 등급으로 신청하시겠습니까?`)) return;
+
+    console.log(value);
+    console.log(subscribeMenu[value]);
+
+    // apply
+    apply({ rank: subscribeMenu[value] });
+
+    alert('신청이 완료되었습니다.');
+    router.push('/profile');
   };
 
   return (
@@ -63,16 +108,16 @@ const Subscribe: NextPage = () => {
           </div>
         </ProcessDetail>
       </ProcessWrapper>
-      <TicketWrapper membership={membership || 1}>
+      <TicketWrapper membership={membership}>
         <h3>멤버십</h3>
         <div>
-          <div onClick={() => selectMembership(1)}>
+          <div onClick={() => selectMembership(0)}>
             <p>베이직</p>
           </div>
-          <div onClick={() => selectMembership(2)}>
+          <div onClick={() => selectMembership(1)}>
             <p>스탠다드</p>
           </div>
-          <div onClick={() => selectMembership(3)}>
+          <div onClick={() => selectMembership(2)}>
             <p>프리미엄</p>
           </div>
         </div>
@@ -94,7 +139,7 @@ const Subscribe: NextPage = () => {
             </tr>
           </tbody>
         </table>
-        <button>구독하기</button>
+        <button onClick={() => applySubscribe(membership)}>구독하기</button>
       </TicketWrapper>
       <NoticeWrapper>
         <h3>필독 사항</h3>
@@ -197,12 +242,12 @@ const TicketWrapper = styled.article<{ membership: number }>`
       cursor: pointer;
     }
 
-    & > div:nth-of-type(${(props) => props.membership}) {
+    & > div:nth-of-type(${({ membership }) => membership + 1}) {
       background-color: red;
       border: 1px solid red;
     }
 
-    & > div:nth-of-type(${(props) => props.membership}):after {
+    & > div:nth-of-type(${({ membership }) => membership + 1}):after {
       content: '';
       position: absolute;
       bottom: -40px;
@@ -231,7 +276,7 @@ const TicketWrapper = styled.article<{ membership: number }>`
           color: gray;
         }
 
-        & > td:nth-of-type(${(props) => props.membership + 1}) {
+        & > td:nth-of-type(${({ membership }) => membership + 2}) {
           color: white;
           font-size: 20px;
         }
