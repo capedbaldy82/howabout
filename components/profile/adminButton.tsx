@@ -18,5 +18,6 @@ const AdminButtonWrapper = styled.div`
   border: 1px solid white;
   background-color: black;
   cursor: pointer;
+  font-display: swap;
   font-family: 'MICEGothic';
 `;
