@@ -6,7 +6,7 @@ interface UserItemProps {
   name: string | null;
   tier: string | null;
   apply: string | null;
-  order: string | null;
+  order: number[] | null;
   rent: string | null;
 }
 
@@ -18,7 +18,7 @@ const UserItem = ({ userId, name, tier, apply, order, rent }: UserItemProps) => 
         <td>{name}</td>
         <td>{tier}</td>
         <td>{apply || '-'}</td>
-        <td>{order || '-'}</td>
+        <td>{order ? order.join(', ') : '-'}</td>
         <td>{rent || '-'}</td>
       </UserItemWrapper>
     </Link>
