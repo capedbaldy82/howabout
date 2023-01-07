@@ -77,10 +77,60 @@ const UserDetail = () => {
 
     console.log('구독 거절');
   };
-  const approveProduct = () => {
+  const approveProduct = async () => {
+    if (!data.user.order) return;
+
+    const token = cookies.load('accessToken');
+
+    const response = await fetch(`${BASE_URL}/auth/approve`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        applicant: data.user.id,
+        product: data.user.order,
+      }),
+    }).then((res) => res.json());
+
+    if (!response.ok) {
+      alert('잘못된 요청입니다.');
+    } else {
+      alert('정상 승인되었습니다.');
+    }
+
+    console.log(response);
+
     console.log('상품 승인');
   };
-  const denyProduct = () => {
+
+  const denyProduct = async () => {
+    if (!data.user.order) return;
+
+    const token = cookies.load('accessToken');
+
+    const response = await fetch(`${BASE_URL}/auth/deny`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        applicant: data.user.id,
+        product: data.user.order,
+      }),
+    }).then((res) => res.json());
+
+    mutate({ ...data, user: { order: null } });
+
+    if (!response.ok) {
+      alert('잘못된 요청입니다.');
+    } else {
+      alert('정상 거부되었습니다.');
+    }
+
+    console.log(response);
     console.log('상품 거절');
   };
 
@@ -119,7 +169,7 @@ const UserDetail = () => {
         </tr>
         <tr>
           <td>상품 신청</td>
-          <td>{data?.user?.order}</td>
+          <td>{data?.user?.order?.join(', ')}</td>
           <td onClick={() => approveProduct()}>상품 승인</td>
           <td onClick={() => denyProduct()}>상품 거절</td>
         </tr>
