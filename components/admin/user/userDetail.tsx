@@ -231,8 +231,7 @@ const UserDetailWrapper = styled.table`
         background-color: #000;
         color: #fff;
         font-size: 12px;
-        ${media.tablet`font-size:14px`}
-        font-display : swap;
+        ${media.tablet`font-size:14px`};
         font-family: 'MICEGothic';
       }
     }

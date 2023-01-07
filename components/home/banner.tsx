@@ -39,7 +39,6 @@ const BannerWrapper = styled.article`
 
     & > p {
       white-space: nowrap;
-      font-display: swap;
       font-family: 'MICEGothic';
 
       font-size: 28px;

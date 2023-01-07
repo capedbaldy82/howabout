@@ -51,7 +51,6 @@ const ProductCreateButton = styled.div`
     color: #fff;
     font-size: 12px;
     ${media.tablet`font-size:14px`}
-    font-display : swap;
     font-family: 'MICEGothic';
     text-align: center;
   }
