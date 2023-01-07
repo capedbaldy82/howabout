@@ -9,9 +9,10 @@ import { representative } from '../../constants/style';
 import media from '../../libs/media';
 import type Product from '.';
 import { BASE_URL } from '@constants/server';
-import useLoggedIn from '@hooks/useLoggedIn';
 import fetchWithAuth from '@libs/fetchWithAuth';
 import React from 'react';
+import useSWRLogin from '@hooks/useLoggedIn';
+import Image from 'next/image';
 
 const ProductDetail: NextPage = () => {
   const router = useRouter();
@@ -24,7 +25,7 @@ const ProductDetail: NextPage = () => {
   const [view, setView] = useState(0);
   const [animation, setAnimation] = useState(false);
   const $button = useRef<HTMLButtonElement>(null);
-  const loggedin = useLoggedIn();
+  const loggedin = useSWRLogin();
 
   const handleView = (content: number): void => {
     setView(content);
@@ -32,7 +33,7 @@ const ProductDetail: NextPage = () => {
 
   const handleAnimation = () => {
     if (!animation) {
-      $button.current!.style.animation = 'clicked ease .75s';
+      $button.current!.style.animation = 'clicked ease .25s';
       setAnimation(true);
       setTimeout(() => {
         setAnimation(false);
@@ -81,7 +82,9 @@ const ProductDetail: NextPage = () => {
       <ProductSummary>
         <ImageWrapper>
           {data && (
-            <img
+            <Image
+              width={355}
+              height={400}
               src={`https://imagedelivery.net/nJK6oMiGlswmnGc8M5OUDA/${data.image}/product`}
               alt="상품 사진"
             />
@@ -143,11 +146,6 @@ const ProductSummary = styled.div`
 const ImageWrapper = styled.div`
   display: flex;
   justify-content: center;
-
-  & > img {
-    width: 255px;
-    ${media.mobile`width:355px`}
-  }
 `;
 
 const InfoWrapper = styled.div`
