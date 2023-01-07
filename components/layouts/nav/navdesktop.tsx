@@ -1,13 +1,9 @@
 import styled from '@emotion/styled';
+import useLoggedIn from '@hooks/useLoggedIn';
 import Link from 'next/link';
-import { Suspense } from 'react';
-import useSWR from 'swr';
-import { BASE_URL } from '../../../constants/server';
-import fetchForAuth from '../../../libs/fetchForAuth';
-import { NavBarData } from './navbar';
 
-const NavDesktop = ({ status, error }: any) => {
-  // const { data, error } = useSWR(`${BASE_URL}/auth/check`, fetchForAuth);
+const NavDesktop = () => {
+  const data = useLoggedIn();
 
   return (
     <NavDesktopWrapper>
@@ -20,20 +16,14 @@ const NavDesktop = ({ status, error }: any) => {
       <li>
         <Link href="/subscribe">구독</Link>
       </li>
-      {!status && !error ? null : status?.ok ? (
+      {data?.ok ? (
         <li>
           <Link href="/cart">장바구니</Link>
         </li>
       ) : null}
-      <Suspense>
-        <li>
-          {!status && !error ? null : status?.ok ? (
-            <Link href="/profile">마이페이지</Link>
-          ) : (
-            <Link href="/login">로그인</Link>
-          )}
-        </li>
-      </Suspense>
+      <li>
+        {data?.ok ? <Link href="/profile">마이페이지</Link> : <Link href="/login">로그인</Link>}
+      </li>
     </NavDesktopWrapper>
   );
 };
