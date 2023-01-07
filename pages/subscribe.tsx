@@ -201,7 +201,6 @@ const ProcessImage = styled.div`
 const ProcessDetail = styled.div`
   display: flex;
   flex-direction: column;
-  font-display: swap;
   font-family: 'MICEGothic';
   padding-left: 8px;
   ${media.tablet`padding-left:0px`};

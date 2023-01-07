@@ -123,8 +123,7 @@ const ButtonWrapper = styled.div`
     background-color: black;
     color: white;
     font-size: 12px;
-    ${media.tablet`font-size:14px`}
-    font-display : swap;
+    ${media.tablet`font-size:14px`};
     font-family: 'MICEGothic';
     cursor: pointer;
   }

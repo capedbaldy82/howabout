@@ -86,7 +86,6 @@ const InfoWrapper = styled.div`
   justify-content: center;
 
   & > p {
-    font-display: swap;
     font-family: 'MICEGOthic';
   }
 
