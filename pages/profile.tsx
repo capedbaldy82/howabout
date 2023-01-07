@@ -1,15 +1,12 @@
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import useSWR, { useSWRConfig } from 'swr';
-import useSWRLogin from '@hooks/useSWRLogin';
+import useLoggedIn from '@hooks/useLoggedIn';
 import ProfileSummary from '@components/profile/profileSummary';
 import ProfileDetail from '@components/profile/profileDetail';
-import { BASE_URL } from '@constants/server';
-import fetchWithAuth from '@libs/fetchWithAuth';
 
 const Profile: NextPage = () => {
   const router = useRouter();
-  const loginState = useSWRLogin();
+  const loginState = useLoggedIn();
 
   return (
     <section>

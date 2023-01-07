@@ -21,7 +21,7 @@ const UserList = () => {
       </thead>
       <tbody>
         {data &&
-          data.users.map((user: any) => (
+          data?.users?.map((user: any) => (
             <UserItem
               key={user.id}
               userId={user.id}

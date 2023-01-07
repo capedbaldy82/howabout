@@ -5,11 +5,16 @@ import media from '../../libs/media';
 interface ButtonProps {
   children: string | React.ReactNode;
   isActive?: boolean;
+  onClick?: () => void;
   [key: string]: any;
 }
 
-const ButtonBig = ({ children, disabled = false }: ButtonProps) => {
-  return <ButtonWrapper disabled={disabled}>{children}</ButtonWrapper>;
+const ButtonBig = ({ children, disabled = false, onClick }: ButtonProps) => {
+  return (
+    <ButtonWrapper onClick={onClick} disabled={disabled}>
+      {children}
+    </ButtonWrapper>
+  );
 };
 
 export default ButtonBig;

@@ -1,16 +1,12 @@
 import styled from '@emotion/styled';
+import useLoggedIn from '@hooks/useLoggedIn';
 import Link from 'next/link';
 import { useRecoilState } from 'recoil';
-import useSWR from 'swr';
-import { BASE_URL } from '../../../constants/server';
-import fetchForAuth from '../../../libs/fetchForAuth';
 import { MenuState } from '../../../store';
-import { NavBarData } from './navbar';
 
-const NavMobile = ({ status, error }: any) => {
-  // const { data, error } = useSWR(`${BASE_URL}/auth/check`, fetchForAuth);
-
+const NavMobile = ({ status }: any) => {
   const [menu, setMenu] = useRecoilState(MenuState);
+  const data = useLoggedIn();
 
   const toggleMenu = () => {
     setMenu((prev) => !prev);
@@ -72,11 +68,7 @@ const NavMobile = ({ status, error }: any) => {
             <Link href="/subscribe">구독</Link>
           </li>
           <li>
-            {!status && !error ? null : status?.ok ? (
-              <Link href="/profile">마이페이지</Link>
-            ) : (
-              <Link href="/login">로그인</Link>
-            )}
+            {data?.ok ? <Link href="/profile">마이페이지</Link> : <Link href="/login">로그인</Link>}
           </li>
         </ul>
       ) : null}

@@ -1,7 +1,7 @@
 import { BASE_URL } from '@constants/server';
 import styled from '@emotion/styled';
-import useLoggedIn from '@hooks/useLoggedIn';
 import useMutation from '@hooks/useMutation';
+import useLoggedIn from '@hooks/useLoggedIn';
 import fetchWithAuth from '@libs/fetchWithAuth';
 import { NextPage } from 'next';
 import Image from 'next/image';
@@ -15,7 +15,7 @@ const subscribeMenu = ['basic', 'standard', 'premium'];
 
 const Subscribe: NextPage = () => {
   const [membership, setMembership] = useState(0);
-  const isLoggined = useLoggedIn();
+  const isLoggined = useLoggedIn(false);
   const router = useRouter();
   const { data: userData } = useSWR(`${BASE_URL}/auth/userinfo`, fetchWithAuth);
   const [apply, { data, loading, error }] = useMutation('POST', `${BASE_URL}/auth/subscribe/apply`);
@@ -24,21 +24,22 @@ const Subscribe: NextPage = () => {
     setMembership(type);
   };
 
-  console.log(userData);
-
   const applySubscribe = (value: number) => {
-    if (!isLoggined) {
+    const userInfo = userData;
+    if (!isLoggined?.ok) {
       if (window.confirm('로그인 후 이용해주세요.\n로그인 페이지로 이동하시겠습니까?')) {
         router.push('/login');
       }
       return;
     }
     if (loading) return;
-    if (userData?.apply && userData?.apply !== 'denied') {
+
+    if (userInfo?.user.apply && userInfo?.user.apply !== 'denied') {
       alert('이미 신청된 상태입니다.\n취소는 마이페이지를 이용해주세요.');
       return;
     }
-    if (userData?.tier !== 'none') {
+
+    if (userInfo?.user.tier !== 'none') {
       alert('이미 구독된 상태입니다.\n변경 및 취소는 마이페이지를 이용해주세요.');
       return;
     }

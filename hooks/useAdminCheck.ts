@@ -1,37 +1,20 @@
-import { BASE_URL } from '../constants/server';
-import cookies from 'react-cookies';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import useUserInfo from '@hooks/useUserInfo';
 
 const useAdminCheck = () => {
   const router = useRouter();
+  const userInfo = useUserInfo();
 
   useEffect(() => {
-    const getUserInfo = async () => {
-      const token = cookies.load('accessToken');
-
-      if (!token) return;
-
-      const response = await fetch(`${BASE_URL}/auth/userinfo`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const result = await response.json();
-
-      console.log(result);
-
-      if (result.name === 'admin') {
-      } else {
-        router.replace('/product');
+    if (userInfo?.user?.username) {
+      if (userInfo.user.username === 'admin') {
+        return;
       }
-    };
 
-    getUserInfo();
-  }, []);
+      router.replace('/product');
+    }
+  }, [userInfo, router]);
 };
 
 export default useAdminCheck;

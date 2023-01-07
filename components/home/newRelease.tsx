@@ -1,5 +1,6 @@
 import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
+import Image from 'next/image';
 import useSWR from 'swr';
 import Product from '../../pages/product';
 
@@ -12,7 +13,9 @@ const NewRelease = () => {
         {data &&
           data?.slice(0, 8).map((product) => (
             <Plane key={product.id}>
-              <img
+              <Image
+                width={300}
+                height={400}
                 src={`https://imagedelivery.net/nJK6oMiGlswmnGc8M5OUDA/${product.image}/product`}
                 alt="새 상품"
               />
@@ -84,8 +87,6 @@ const Carousel = styled.section`
 const Plane = styled.article`
   display: flex;
   justify-content: center;
-  width: 300px;
-  height: 400px;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
   box-sizing: border-box;
   display: flex;
