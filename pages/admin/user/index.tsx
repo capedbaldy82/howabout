@@ -3,11 +3,11 @@ import AdminLayout from '@components/admin/common/adminLayout';
 import styled from '@emotion/styled';
 import useAdminCheck from '@hooks/useAdminCheck';
 import UserList from '@components/admin/user/userList';
-import useSWRLogin from '@hooks/useSWRLogin';
+import useLoggedIn from '@hooks/useLoggedIn';
 
 const User = () => {
+  const login = useLoggedIn();
   const user = useAdminCheck();
-  const login = useSWRLogin();
 
   return (
     <AdminLayout>
