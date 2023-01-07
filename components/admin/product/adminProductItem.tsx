@@ -142,6 +142,7 @@ const Li = styled.tr`
       color: white;
       font-size: 12px;
       ${media.tablet`font-size:14px`}
+      font-display : swap;
       font-family: 'MICEGothic';
       cursor: pointer;
     }
