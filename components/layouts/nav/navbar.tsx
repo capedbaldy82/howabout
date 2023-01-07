@@ -5,6 +5,8 @@ import { sizes } from '../../../libs/media';
 import fetchForAuth from '../../../libs/fetchForAuth';
 import NavDesktop from './navdesktop';
 import NavMobile from './navmobile';
+import fetchWithAuth from '@libs/fetchWithAuth';
+import useLoggedIn from '@hooks/useLoggedIn';
 
 export interface NavBarData {
   ok?: boolean | undefined;
@@ -15,11 +17,7 @@ const NavBar = ({ size }: { size: number }) => {
 
   return (
     <NavWrapper>
-      {size < parseInt(sizes.tablet) ? (
-        <NavMobile status={data} error={error} />
-      ) : (
-        <NavDesktop status={data} error={error} />
-      )}
+      {size < parseInt(sizes.tablet) ? <NavMobile status={data} /> : <NavDesktop />}
     </NavWrapper>
   );
 };
