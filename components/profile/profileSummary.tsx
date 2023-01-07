@@ -1,3 +1,4 @@
+import AdminButton from '@components/profile/adminButton';
 import BackgroundLayout from '@components/profile/backgroundLayout';
 import { BASE_URL } from '@constants/server';
 import { representative } from '@constants/style';
@@ -8,18 +9,19 @@ import { removeCookie } from '@libs/handleCookie';
 import media from '@libs/media';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import useSWR, { mutate } from 'swr';
+import useSWR, { useSWRConfig } from 'swr';
 
 const ProfileSummary = () => {
   const { data } = useSWR(`${BASE_URL}/auth/userinfo`, fetchWithAuth);
   const router = useRouter();
+  const { mutate } = useSWRConfig();
 
   // 로그아웃
   const logOut = () => {
     if (!confirm('로그아웃 하시겠습니까?')) return;
 
     removeCookie('accessToken');
-    mutate(`${BASE_URL}/auth/check`, fetchForAuth, false);
+    mutate(`${BASE_URL}/auth/check`, { ok: false }, false);
     router.replace('/');
   };
 
@@ -31,9 +33,8 @@ const ProfileSummary = () => {
         </ImageWrapper>
         <ContentsWrapper>
           <InfoWrapper>
-            <p>{data?.name}</p>
-            <p>구독 등급</p>
-            <p>구독 기간</p>
+            <p>{data?.user?.name}</p>
+            <p>등급: {data?.user?.tier}</p>
           </InfoWrapper>
           <LogOutWrapper>
             <button onClick={() => logOut()}>
@@ -47,6 +48,7 @@ const ProfileSummary = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
+            {data?.user?.username === 'admin' ? <AdminButton /> : null}
           </LogOutWrapper>
         </ContentsWrapper>
       </ProfileSummaryWrapper>
@@ -106,11 +108,13 @@ const InfoWrapper = styled.div`
 
 const LogOutWrapper = styled.div`
   display: flex;
-  align-items: flex-start;
+  justify-content: space-between;
+  flex-direction: column;
 
   & > button {
     background-color: black;
     border: none;
+    cursor: pointer;
 
     & > svg {
       width: 18px;
